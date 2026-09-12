@@ -74,7 +74,7 @@ export function SectionNavigator() {
     <nav
       aria-label="Jump to page section"
       className="fixed top-1/2 z-40 hidden w-28 -translate-y-1/2 flex-col min-[1420px]:flex"
-      style={{ right: "max(0.5rem, calc((100vw - 1180px) / 2 - 7.5rem))" }}
+      style={{ right: "max(0.5rem, calc((100vw - 1180px) / 2 - 11.5rem))" }}
     >
       <span className="sr-only">
         Section {activeIndex + 1} of {SECTIONS.length}

@@ -16,7 +16,7 @@ export const DATA = {
     "Data & AI Engineer building production-ready internal products, from deliberate data foundations to multi-agent workflows.",
   summary:
     "My work starts with data engineering. At [GovTech](https://www.tech.gov.sg), my core scope spans **five internal projects** covering dashboards, data pipelines, optimization, and operational monitoring. I also build AI products on top of that foundation. Two internal applications are in production, with more progressing through UAT. Earlier at [Micron Technology](https://www.micron.com), I built **40+ pipelines** and automation that saved **100+ hours weekly**. I design data models, reliable state, traceable decisions, and operating workflows early so an application can move beyond a quick demonstration.",
-  avatarUrl: "/portrait-with-dog.jpg",
+  avatarUrl: "/kerk-bamboo-portrait.jpg",
 
   skills: [
     "TypeScript",

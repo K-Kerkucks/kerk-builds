@@ -73,7 +73,7 @@ export default function Page() {
                 <div className="absolute -inset-3 rounded-[2.2rem] bg-gradient-to-br from-cyan-400/25 via-violet-400/20 to-rose-400/25 blur-lg" />
                 <Image
                   src={DATA.avatarUrl}
-                  alt={`${DATA.name} with a dog by the water`}
+                  alt={`${DATA.name} in a bamboo garden`}
                   width={1120}
                   height={1400}
                   priority

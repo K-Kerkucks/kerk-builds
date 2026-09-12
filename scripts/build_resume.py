@@ -10,6 +10,7 @@ import sys
 import tempfile
 
 from docx import Document
+from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -95,15 +96,61 @@ def add_section_heading(doc: Document, label: str) -> None:
     run.underline = True
 
 
+def set_cell_margins_zero(cell) -> None:
+    cell_properties = cell._tc.get_or_add_tcPr()
+    margins = cell_properties.first_child_found_in("w:tcMar")
+    if margins is None:
+        margins = OxmlElement("w:tcMar")
+        cell_properties.append(margins)
+    for edge in ("top", "left", "bottom", "right"):
+        node = margins.find(qn(f"w:{edge}"))
+        if node is None:
+            node = OxmlElement(f"w:{edge}")
+            margins.append(node)
+        node.set(qn("w:w"), "0")
+        node.set(qn("w:type"), "dxa")
+
+
+def set_table_borders_none(table) -> None:
+    table_properties = table._tbl.tblPr
+    borders = table_properties.first_child_found_in("w:tblBorders")
+    if borders is None:
+        borders = OxmlElement("w:tblBorders")
+        table_properties.append(borders)
+    for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
+        node = borders.find(qn(f"w:{edge}"))
+        if node is None:
+            node = OxmlElement(f"w:{edge}")
+            borders.append(node)
+        node.set(qn("w:val"), "nil")
+
+
 def add_header_row(doc: Document, label: str, dates: str, *, before: float = 7) -> None:
+    table = doc.add_table(rows=1, cols=2)
+    table.autofit = False
+    table.columns[0].width = Inches(5.45)
+    table.columns[1].width = Inches(1.82)
+    set_table_borders_none(table)
+
+    left_cell, right_cell = table.rows[0].cells
+    for cell in (left_cell, right_cell):
+        set_cell_margins_zero(cell)
+        cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.BOTTOM
+
+    left = left_cell.paragraphs[0]
+    set_body_paragraph(left, before=before, after=3, keep_next=True)
+    set_run(left.add_run(label), bold=True, size=11.2)
+
+    right = right_cell.paragraphs[0]
+    set_body_paragraph(right, before=before, after=3, keep_next=True)
+    right.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    set_run(right.add_run(dates), bold=True, size=11.2)
+
+
+def add_item_heading(doc: Document, label: str, *, before: float = 7) -> None:
     paragraph = doc.add_paragraph()
     set_body_paragraph(paragraph, before=before, after=3, keep_next=True)
-    paragraph.paragraph_format.tab_stops.add_tab_stop(Inches(7.15), WD_TAB_ALIGNMENT.RIGHT)
-    label_run = paragraph.add_run(label)
-    set_run(label_run, bold=True, size=11.2)
-    paragraph.add_run("\t")
-    date_run = paragraph.add_run(dates)
-    set_run(date_run, bold=True, size=11.2)
+    set_run(paragraph.add_run(label), bold=True, size=11.2)
 
 
 def add_plain_paragraph(doc: Document, text: str, *, after: float = 4) -> None:
@@ -243,21 +290,21 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
         add_bullet(doc, bullet, after=4)
 
     add_section_heading(doc, "Selected Internal Products")
-    add_header_row(doc, "Multi-agent triage platform", "Production  |  Internal", before=2)
+    add_item_heading(doc, "Multi-agent triage platform", before=2)
     add_bullet(
         doc,
         "Classifies unstructured requests, retrieves governed knowledge, scores confidence, and routes each case to an automated response or human review. Versioned knowledge and audit records keep decisions explainable and recoverable.",
     )
-    add_header_row(doc, "AI workspace platform", "Production  |  Internal")
+    add_item_heading(doc, "AI workspace platform")
     add_bullet(
         doc,
         "Connects AI-assisted ticket proposals with Kanban operations and configurable agents. A durable relational model for workspaces, permissions, tickets, and events supports controlled growth.",
     )
 
     add_section_heading(doc, "Certifications")
-    add_bullet(doc, "Databricks Certified Data Engineer Associate, Credential 166618858, valid Nov 2025 to Nov 2027")
-    add_bullet(doc, "DART AI for Cybersecurity Practitioners, earned 31 Aug 2026")
-    add_bullet(doc, "AI Singapore AI for Industry® Literacy in AI, ID 32518583, earned 16 May 2021")
+    add_bullet(doc, "Databricks Certified Data Engineer Associate")
+    add_bullet(doc, "DART AI for Cybersecurity Practitioners")
+    add_bullet(doc, "AI Singapore AI for Industry® Literacy in AI")
 
     add_section_heading(doc, "Skills")
     add_bullet(doc, "LLM orchestration, multi-agent systems, retrieval-augmented generation, and AI agents", bold_lead="AI systems: ")
