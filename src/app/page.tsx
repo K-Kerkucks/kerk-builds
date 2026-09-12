@@ -33,12 +33,12 @@ export default function Page() {
                 delay={BLUR_FADE_DELAY * 2}
                 className="text-balance text-4xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl"
                 yOffset={8}
-                text={`Hi, I'm ${DATA.name.split(" ")[0]}.`}
+                text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
               />
               <BlurFade delay={BLUR_FADE_DELAY * 3}>
                 <p className="mt-6 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-xl sm:leading-8">
                   Data and AI engineer turning complex internal operations into
-                  dependable products — from semiconductor planning to multi-agent
+                  dependable products, from semiconductor planning to multi-agent
                   platforms used in production.
                 </p>
               </BlurFade>
@@ -87,7 +87,7 @@ export default function Page() {
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
           <SectionHeading
             eyebrow="01 / About"
-            title="Engineering that earns its place in the workflow."
+            title="Engineering that earns its place in the workflow"
           />
         </BlurFade>
         <div className="mt-7 grid gap-6 lg:grid-cols-[1.35fr_1fr]">
@@ -117,7 +117,7 @@ export default function Page() {
         <BlurFade delay={BLUR_FADE_DELAY * 5}>
           <SectionHeading
             eyebrow="02 / Experience"
-            title="From data foundations to AI products."
+            title="From data foundations to AI products"
             description="A fuller look at the systems I led, the operational problems behind them, and the outcomes they created."
           />
         </BlurFade>
@@ -132,7 +132,7 @@ export default function Page() {
         <BlurFade delay={BLUR_FADE_DELAY * 7}>
           <SectionHeading
             eyebrow="03 / Credentials"
-            title="Education and continued learning."
+            title="Education and continued learning"
             description="Formal training backed by current, hands-on certifications in data engineering and applied AI for cybersecurity."
           />
         </BlurFade>
@@ -147,7 +147,7 @@ export default function Page() {
         <BlurFade delay={BLUR_FADE_DELAY * 9}>
           <SectionHeading
             eyebrow="04 / Capabilities"
-            title="A cross-functional technical toolkit."
+            title="A cross-functional technical toolkit"
             description="Comfortable moving between product decisions, AI orchestration, data platforms, and the code that connects them."
           />
         </BlurFade>

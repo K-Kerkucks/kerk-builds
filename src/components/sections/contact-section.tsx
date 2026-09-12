@@ -13,7 +13,7 @@ export function ContactSection() {
             06 / Contact
           </p>
           <h2 className="mt-4 max-w-lg text-balance text-3xl font-semibold tracking-[-0.045em] sm:text-5xl">
-            Let&apos;s build something that holds up in production.
+            Let&apos;s build something that holds up in production
           </h2>
           <p className="mt-4 max-w-lg text-sm leading-7 text-background/65 sm:text-base">
             I&apos;m always glad to compare notes on internal AI products, data

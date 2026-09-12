@@ -194,7 +194,7 @@ def build_resume(output_path: Path) -> None:
     profile.paragraph_format.space_after = Pt(5)
     profile.paragraph_format.line_spacing = 1.12
     profile.add_run(
-        "Data engineer by training and AI product builder by practice. I turn internal operational problems into dependable systems, combining multi-agent workflows, full-stack delivery, and intentional database design. Two internal AI applications are deployed and used in production, with additional products progressing through UAT. My focus is the layer that often separates a convincing AI demo from a production-ready product: reliable state, governed data, traceable decisions, clear permissions, and maintainable integration boundaries."
+        "I am a data engineer who also builds AI products end to end. I turn internal operational problems into dependable systems by combining multi-agent workflows, full-stack delivery, and intentional database design. Two internal AI applications are in production today, with more progressing through UAT. I focus on the foundations that turn a convincing demo into a product people can rely on: durable state, governed data, traceable decisions, clear permissions, and maintainable integrations."
     )
 
     snapshot = doc.add_table(rows=1, cols=4)
@@ -207,7 +207,7 @@ def build_resume(output_path: Path) -> None:
             ("2", "internal AI apps live"),
             ("40+", "data pipelines built"),
             ("100+", "hours saved weekly"),
-            ("2–5%", "additional cost saving"),
+            ("2-5%", "additional cost saving"),
         ],
     ):
         set_cell_shading(cell, SOFT)
@@ -224,7 +224,7 @@ def build_resume(output_path: Path) -> None:
         label_run.font.color.rgb = MUTED
 
     add_section_heading(doc, "Professional experience")
-    add_role_header(doc, "Data & AI Engineer", "GovTech", "2024 — Present")
+    add_role_header(doc, "Data & AI Engineer", "GovTech", "2024 to Present")
     for bullet in [
         "Ship internal AI products end to end, from data model and workflow design through deployment and adoption; two applications are live in production and additional systems are in UAT.",
         "Built a channel-agnostic multi-agent triage platform with configurable pipelines, knowledge-base matching, confidence thresholds, automated replies, human escalation, and auditable state.",
@@ -235,10 +235,10 @@ def build_resume(output_path: Path) -> None:
     ]:
         add_bullet(doc, bullet)
 
-    add_role_header(doc, "Data Science Engineer", "Micron Technology", "Jun 2022 — 2024")
+    add_role_header(doc, "Data Science Engineer", "Micron Technology", "Jun 2022 to 2025")
     for bullet in [
         "Served as technical lead for supply-chain optimization initiatives supporting tactical planning and planned-order firming.",
-        "Improved the tactical-planning optimizer to deliver an additional 2–5% cost saving for assembly products while satisfying order and operational constraints.",
+        "Improved the tactical-planning optimizer to deliver an additional 2-5% cost saving for assembly products while satisfying order and operational constraints.",
         "Built and maintained 40+ data pipelines and automation flows plus 60+ trusted tables for optimization, planning reports, and raw-material health analysis.",
         "Led the Planned Order Firming migration to Snowflake and automated the end-to-end workflow, saving more than 80 hours each week.",
         "Scaled product-assembly re-entrance reporting across product groups, saving a further 20+ hours weekly; also led equipment performance-to-model reporting and model-accuracy data work.",
@@ -246,7 +246,7 @@ def build_resume(output_path: Path) -> None:
         add_bullet(doc, bullet)
 
     add_section_heading(doc, "Earlier experience")
-    add_role_header(doc, "Research Intern (C4NGP/C4NGL)", "National University of Singapore", "May — Aug 2021")
+    add_role_header(doc, "Research Intern (C4NGP/C4NGL)", "National University of Singapore", "May to Aug 2021")
     for bullet in [
         "Conducted a technology scan of PSA’s operating context and assessed technologies with potential strategic value.",
         "Supported a Huawei warehouse-simulation project by refining entity-flow diagrams and defining grid-based path-mover behaviour.",
@@ -287,7 +287,7 @@ def build_resume(output_path: Path) -> None:
         doc,
         "Bachelor of Engineering, Industrial and Systems Engineering",
         "National University of Singapore",
-        "2018 — 2022",
+        "2018 to 2022",
     )
     education = doc.add_paragraph(
         "Operations research, stochastic optimization, simulation, machine learning, quality engineering, and product delivery. Academic work included fulfilment network optimization with Gurobi, RNN/LSTM airline analysis, and warehouse/shuttle simulation."
@@ -301,9 +301,9 @@ def build_resume(output_path: Path) -> None:
     cert_table.columns[0].width = Inches(5.45)
     cert_table.columns[1].width = Inches(1.58)
     certs = [
-        ("Databricks Certified Data Engineer Associate  ·  Credential 166618858", "Nov 2025 — Nov 2027"),
-        ("DART — AI for Cybersecurity Practitioners", "Earned 31 Aug 2026"),
-        ("AI Singapore — AI for Industry®: Literacy in AI  ·  ID 32518583", "16 May 2021"),
+        ("Databricks Certified Data Engineer Associate  ·  Credential 166618858", "Nov 2025 to Nov 2027"),
+        ("DART: AI for Cybersecurity Practitioners", "Earned 31 Aug 2026"),
+        ("AI Singapore: AI for Industry® Literacy in AI  ·  ID 32518583", "16 May 2021"),
     ]
     for row, (name_text, date_text) in zip(cert_table.rows, certs):
         for cell in row.cells:

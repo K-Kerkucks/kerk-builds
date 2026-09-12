@@ -58,7 +58,7 @@ export function ProjectsShowcase({ compact = false }: ProjectsShowcaseProps) {
             <span className="h-px w-8 bg-foreground/40" /> 05 / Selected systems
           </div>
           <h2 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-            AI that survives the demo.
+            AI that survives the demo
           </h2>
         </div>
         <p className="max-w-md text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">

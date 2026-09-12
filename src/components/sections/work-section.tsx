@@ -28,7 +28,7 @@ export function WorkSection() {
             style={{ backgroundColor: work.accent }}
           />
 
-          <div className="grid gap-7 md:grid-cols-[11rem_1fr] lg:grid-cols-[13rem_1fr]">
+          <div className="grid gap-7 md:grid-cols-[11rem_minmax(0,1fr)] lg:grid-cols-[13rem_minmax(0,1fr)]">
             <div className="flex flex-col gap-5">
               <Link
                 href={work.href}
@@ -46,7 +46,7 @@ export function WorkSection() {
 
               <div>
                 <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {work.start} — {work.end ?? "Present"}
+                  {work.start} / {work.end ?? "Present"}
                 </p>
                 <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
                   <MapPin className="size-3.5" aria-hidden />
@@ -55,7 +55,7 @@ export function WorkSection() {
               </div>
             </div>
 
-            <div>
+            <div className="min-w-0">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
@@ -112,14 +112,14 @@ export function WorkSection() {
                       >
                         <Check className="size-2.5" strokeWidth={3} aria-hidden />
                       </span>
-                      <span>{highlight}</span>
+                      <span className="min-w-0 break-words">{highlight}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {work.activities.length > 0 ? (
-                <div className="mt-6 grid gap-5 border-t border-border/60 pt-6 md:grid-cols-[0.8fr_1.2fr]">
+                <div className="mt-6 grid gap-5 border-t border-border/60 pt-6 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
                   {work.activityImage ? (
                     <img
                       src={work.activityImage}
@@ -133,7 +133,7 @@ export function WorkSection() {
                       <p className="mt-1 text-[0.65rem]">Ready for your next image</p>
                     </div>
                   )}
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <Presentation className="size-4" style={{ color: work.accent }} aria-hidden />
                       <p className="font-mono text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -142,7 +142,7 @@ export function WorkSection() {
                     </div>
                     <ul className="mt-3 space-y-3">
                       {work.activities.map((activity) => (
-                        <li key={activity} className="text-sm leading-6 text-muted-foreground">
+                        <li key={activity} className="min-w-0 break-words text-sm leading-6 text-muted-foreground">
                           {activity}
                         </li>
                       ))}

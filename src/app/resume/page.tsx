@@ -12,7 +12,7 @@ import { DATA } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Resume",
-  description: `Resume — ${DATA.name}, ${DATA.description}`,
+  description: `Resume for ${DATA.name}, ${DATA.description}`,
 };
 
 const DELAY = 0.04;
@@ -78,7 +78,7 @@ export default function ResumePage() {
         <BlurFade delay={DELAY * 4}>
           <SectionHeading
             eyebrow="Profile"
-            title="Built for adoption, scale, and operational trust."
+            title="Built for adoption, scale, and operational trust"
           />
         </BlurFade>
         <BlurFade delay={DELAY * 5}>
@@ -92,7 +92,7 @@ export default function ResumePage() {
         <BlurFade delay={DELAY * 6}>
           <SectionHeading
             eyebrow="Experience"
-            title="Selected professional work."
+            title="Selected professional work"
             description="Delivery details, production outcomes, and the data-engineering foundations behind each role."
           />
         </BlurFade>
@@ -107,7 +107,7 @@ export default function ResumePage() {
         <BlurFade delay={DELAY * 8}>
           <SectionHeading
             eyebrow="Credentials"
-            title="Education and certifications."
+            title="Education and certifications"
           />
         </BlurFade>
         <BlurFade delay={DELAY * 9}>
@@ -119,7 +119,7 @@ export default function ResumePage() {
 
       <section>
         <BlurFade delay={DELAY * 10}>
-          <SectionHeading eyebrow="Capabilities" title="Technical toolkit." />
+          <SectionHeading eyebrow="Capabilities" title="Technical toolkit" />
         </BlurFade>
         <BlurFade delay={DELAY * 11}>
           <div className="mt-7">

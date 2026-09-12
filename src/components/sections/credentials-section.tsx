@@ -33,7 +33,7 @@ export function CredentialsSection() {
             />
           </div>
           <p className="mt-6 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.17em] text-muted-foreground">
-            {education.start} — {education.end}
+            {education.start} / {education.end}
           </p>
           <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em]">
             {education.degree}

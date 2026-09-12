@@ -5,7 +5,7 @@ import { BlurFade } from "@/components/ui/blur-fade";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Writing by Kerk Zhi Sheng — coming soon.",
+  description: "Writing by Kerk Zhi Sheng. Coming soon.",
 };
 
 export default function BlogPage() {
@@ -31,7 +31,7 @@ export default function BlogPage() {
             Notes / Coming later
           </p>
           <h1 className="relative mt-3 text-4xl font-semibold tracking-[-0.045em] sm:text-5xl">
-            The page is intentionally quiet.
+            The page is intentionally quiet
           </h1>
           <p className="relative mx-auto mt-4 max-w-lg text-pretty text-sm leading-7 text-muted-foreground sm:text-base">
             I have not published any articles here yet. When I do, this space will

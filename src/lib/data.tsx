@@ -15,7 +15,7 @@ export const DATA = {
   description:
     "Data & AI Engineer building production-ready internal products, from deliberate data foundations to multi-agent workflows.",
   summary:
-    "The market is full of AI applications that can be assembled quickly. The harder question is whether they are **production-ready**: backed by intentional data models, reliable state, traceable decisions, permissions, and operating workflows. Trained as a data engineer, I design those foundations from the start—so AI products can move quickly without creating a scaling problem later. At [GovTech](https://www.tech.gov.sg), I have shipped **two internal applications into production**, with more progressing through UAT. Earlier at [Micron Technology](https://www.micron.com), I built **40+ pipelines** and automation that saved **100+ hours weekly**.",
+    "Lots of AI applications can be put together quickly. The harder part is getting one ready for everyday use: clear data models, reliable state, traceable decisions, sensible permissions, and workflows people can actually operate. I trained as a data engineer, so I design these foundations early. This lets teams move fast without leaving a scaling problem for later. At [GovTech](https://www.tech.gov.sg), I have shipped **two internal applications into production**, with more progressing through UAT. Earlier at [Micron Technology](https://www.micron.com), I built **40+ pipelines** and automation that saved **100+ hours weekly**.",
   avatarUrl: "/portrait-with-dog.jpg",
 
   skills: [
@@ -99,7 +99,7 @@ export const DATA = {
       start: "2024",
       end: "Present",
       description:
-        "Designing and shipping internal AI products from data model to operating workflow. Two applications are deployed and used in production, with additional systems progressing through UAT.",
+        "I design and ship internal AI products from the data model through to the operating workflow. Two applications are in production today, with more progressing through UAT.",
       highlights: [
         "Built a channel-agnostic, multi-agent triage system with configurable pipelines, knowledge-base matching, confidence thresholds, automated replies, human escalation, and auditable state.",
         "Designed an intelligent workspace platform combining AI-assisted ticket proposals, Kanban workflows, configurable agent profiles, permissions, and cross-workspace operations.",
@@ -126,11 +126,11 @@ export const DATA = {
       title: "Data Science Engineer",
       logoUrl: "/logos/micron.png",
       start: "Jun 2022",
-      end: "2024",
+      end: "2025",
       description:
-        "Led data engineering and optimization initiatives for tactical semiconductor planning, translating operational constraints into trusted data products and automated workflows.",
+        "I led data engineering and optimization work for tactical semiconductor planning, turning operational constraints into trusted data products and automated workflows.",
       highlights: [
-        "Led continuous improvement of the tactical-planning optimizer, delivering an additional 2–5% cost saving for assembly products while preserving order constraints.",
+        "Led continuous improvement of the tactical-planning optimizer, delivering an additional 2-5% cost saving for assembly products while preserving order constraints.",
         "Built and maintained 40+ data pipelines and automation flows plus 60+ trusted tables supporting optimization, planning reports, and material-health analysis.",
         "Led the Planned Order Firming migration to Snowflake and automated the end-to-end process, saving 80+ hours weekly.",
         "Scaled automated re-entrance reporting across product groups, contributing a further 20+ hours of weekly time savings.",
@@ -140,7 +140,7 @@ export const DATA = {
         { value: "40+", label: "Data pipelines" },
         { value: "60+", label: "Trusted tables" },
         { value: "100+ hrs", label: "Saved weekly" },
-        { value: "2–5%", label: "Additional savings" },
+        { value: "2-5%", label: "Additional savings" },
       ],
       activities: [],
       activityImage: "",
@@ -206,10 +206,10 @@ export const DATA = {
       accent: "#8b5cf6",
       imageUrl: "/certifications/dart-ai-cybersecurity.png",
       description:
-        "Completed DART’s three-day AI for Cybersecurity Practitioners programme from 26–28 August 2026; certificate earned 31 August 2026.",
+        "Completed DART’s three-day AI for Cybersecurity Practitioners programme from 26 to 28 August 2026; certificate earned 31 August 2026.",
     },
     {
-      name: "AI for Industry® — Literacy in AI",
+      name: "AI for Industry®: Literacy in AI",
       issuer: "AI Singapore",
       issued: "May 2021",
       expires: "",
@@ -229,7 +229,7 @@ export const DATA = {
       accent: "#22d3ee",
       visual: "inbox",
       href: "",
-      dates: "2024 — Present",
+      dates: "2024 to Present",
       active: true,
       release: "Production · Internal",
       description:
@@ -260,7 +260,7 @@ export const DATA = {
       accent: "#a78bfa",
       visual: "board",
       href: "",
-      dates: "2024 — Present",
+      dates: "2024 to Present",
       active: true,
       release: "Production · Internal",
       description:
@@ -268,7 +268,7 @@ export const DATA = {
       challenge:
         "Project context is fragmented across boards, tickets, and teams, so routine coordination becomes a constant tax on delivery.",
       approach:
-        "A shared workspace model lets an AI assistant propose structured work, operate across boards, and adapt through configurable agent profiles. The underlying ticket, workspace, permission, and event models were designed as product infrastructure—not incidental storage.",
+        "A shared workspace model lets an AI assistant propose structured work, operate across boards, and adapt through configurable agent profiles. The underlying ticket, workspace, permission, and event models were designed as product infrastructure, not incidental storage.",
       outcome:
         "A production-deployed internal workspace where planning and AI-assisted execution stay connected instead of drifting into separate tools.",
       productionFocus:
@@ -303,7 +303,7 @@ export const DATA = {
       outcome:
         "Discovery becomes more relevant than literal keyword matching while identity checks help make each recommendation more trustworthy.",
       productionFocus:
-        "Relational identity and job data remain the source of truth while embeddings add semantic retrieval—keeping AI recommendations grounded in governed records.",
+        "Relational identity and job data remain the source of truth while embeddings add semantic retrieval, keeping AI recommendations grounded in governed records.",
       technologies: [
         "Next.js",
         "Supabase",
@@ -322,7 +322,7 @@ export const DATA = {
       accent: "#34d399",
       visual: "analytics",
       href: "",
-      dates: "2022 — Present",
+      dates: "2022 to Present",
       active: true,
       release: "UAT · Internal",
       description:
@@ -357,7 +357,7 @@ export const DATA = {
       active: false,
       release: "Personal build",
       description:
-        "An interactive desktop companion that lives on your screen — reacts to mouse movements, has idle animations, and brings a bit of joy to long coding sessions. Built as a fun weekend project to explore desktop rendering and sprite animation.",
+        "An interactive desktop companion that lives on your screen, reacts to mouse movements, has idle animations, and brings a bit of joy to long coding sessions. Built as a fun weekend project to explore desktop rendering and sprite animation.",
       challenge:
         "Desktop utilities are useful but rarely delightful; this experiment asked how a tiny ambient character could feel alive without becoming distracting.",
       approach:
@@ -383,7 +383,7 @@ export const DATA = {
       accent: "#60a5fa",
       visual: "language",
       href: "",
-      dates: "2023 — 2024",
+      dates: "2023 to 2024",
       active: false,
       release: "Personal build",
       description:
