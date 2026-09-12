@@ -15,7 +15,7 @@ export const DATA = {
   description:
     "Data & AI Engineer building production-ready internal products, from deliberate data foundations to multi-agent workflows.",
   summary:
-    "Lots of AI applications can be put together quickly. The harder part is getting one ready for everyday use: clear data models, reliable state, traceable decisions, sensible permissions, and workflows people can actually operate. I trained as a data engineer, so I design these foundations early. This lets teams move fast without leaving a scaling problem for later. At [GovTech](https://www.tech.gov.sg), I have shipped **two internal applications into production**, with more progressing through UAT. Earlier at [Micron Technology](https://www.micron.com), I built **40+ pipelines** and automation that saved **100+ hours weekly**.",
+    "My work starts with data engineering. At [GovTech](https://www.tech.gov.sg), my core scope spans **five internal projects** covering dashboards, data pipelines, optimization, and operational monitoring. I also build AI products on top of that foundation. Two internal applications are in production, with more progressing through UAT. Earlier at [Micron Technology](https://www.micron.com), I built **40+ pipelines** and automation that saved **100+ hours weekly**. I design data models, reliable state, traceable decisions, and operating workflows early so an application can move beyond a quick demonstration.",
   avatarUrl: "/portrait-with-dog.jpg",
 
   skills: [
@@ -40,18 +40,30 @@ export const DATA = {
   skillGroups: [
     {
       label: "AI systems",
+      description:
+        "Design agent workflows that can be tested, traced, and operated by internal teams.",
+      applied: ["Confidence-based routing", "Grounded retrieval", "Human review paths"],
       skills: ["LLM Orchestration", "Multi-Agent Systems", "RAG", "AI Agents"],
     },
     {
       label: "Data platforms",
+      description:
+        "Build and maintain dependable pipelines, trusted models, and monitoring across data products.",
+      applied: ["Pipeline maintenance", "Skip and volume monitoring", "Data optimization"],
       skills: ["Databricks", "Snowflake", "PostgreSQL", "NiFi", "SQL"],
     },
     {
       label: "Product engineering",
+      description:
+        "Turn internal workflows into usable products, from interaction design to deployment.",
+      applied: ["Full-stack delivery", "Permission-aware workflows", "Production deployment"],
       skills: ["TypeScript", "React", "Next.js", "Node.js", "Docker"],
     },
     {
       label: "Analytics",
+      description:
+        "Create dashboards and analysis that help teams detect issues and understand their causes.",
+      applied: ["Dashboard development", "Operational analysis", "Optimization and simulation"],
       skills: ["Python", "Tableau", "R", "Optimization", "Simulation"],
     },
   ],
@@ -99,16 +111,29 @@ export const DATA = {
       start: "2024",
       end: "Present",
       description:
-        "I design and ship internal AI products from the data model through to the operating workflow. Two applications are in production today, with more progressing through UAT.",
-      highlights: [
-        "Built a channel-agnostic, multi-agent triage system with configurable pipelines, knowledge-base matching, confidence thresholds, automated replies, human escalation, and auditable state.",
-        "Designed an intelligent workspace platform combining AI-assisted ticket proposals, Kanban workflows, configurable agent profiles, permissions, and cross-workspace operations.",
-        "Applied a data-engineering lens to production readiness: intentional schemas, dependable persistence, traceable agent decisions, and maintainable integration boundaries.",
-        "Developed a real-time pose-detection engine with MediaPipe and engineered operational dashboards and Databricks pipelines for internal use.",
+        "My core scope covers data engineering across five internal projects, including dashboard development, data pipeline delivery and maintenance, optimization, and operational monitoring. I also design and ship internal AI products on top of this foundation.",
+      highlightGroups: [
+        {
+          label: "Core data engineering",
+          items: [
+            "Worked across five internal projects, developing operational dashboards and building, maintaining, and improving data pipelines used by internal teams.",
+            "Developed optimization and monitoring solutions, including pipeline skip detection and volume analysis to surface skipped runs and unexpected processing patterns.",
+          ],
+        },
+        {
+          label: "AI product engineering",
+          items: [
+            "Built a channel-agnostic, multi-agent triage system with configurable pipelines, knowledge-base matching, confidence thresholds, automated replies, human escalation, and auditable state.",
+            "Designed an intelligent workspace platform combining AI-assisted ticket proposals, Kanban workflows, configurable agent profiles, permissions, and cross-workspace operations.",
+            "Applied data engineering principles to AI production readiness through intentional schemas, dependable persistence, traceable agent decisions, and maintainable integration boundaries.",
+            "Developed a real-time pose-detection engine with MediaPipe for an internal workflow.",
+          ],
+        },
       ],
       metrics: [
-        { value: "2 live", label: "Internal apps" },
-        { value: "UAT", label: "More in validation" },
+        { value: "5", label: "Core data projects" },
+        { value: "2 live", label: "Internal AI apps" },
+        { value: "UAT", label: "More AI apps in validation" },
         { value: "End to end", label: "Data to product" },
       ],
       activities: [
@@ -129,12 +154,22 @@ export const DATA = {
       end: "2025",
       description:
         "I led data engineering and optimization work for tactical semiconductor planning, turning operational constraints into trusted data products and automated workflows.",
-      highlights: [
-        "Led continuous improvement of the tactical-planning optimizer, delivering an additional 2-5% cost saving for assembly products while preserving order constraints.",
-        "Built and maintained 40+ data pipelines and automation flows plus 60+ trusted tables supporting optimization, planning reports, and material-health analysis.",
-        "Led the Planned Order Firming migration to Snowflake and automated the end-to-end process, saving 80+ hours weekly.",
-        "Scaled automated re-entrance reporting across product groups, contributing a further 20+ hours of weekly time savings.",
-        "Directed equipment performance-to-model tracking and coordinated data engineers building reliable sources for model-accuracy analysis.",
+      highlightGroups: [
+        {
+          label: "Optimization and planning",
+          items: [
+            "Led continuous improvement of the tactical-planning optimizer, delivering an additional 2-5% cost saving for assembly products while preserving order constraints.",
+            "Directed equipment performance-to-model tracking and coordinated data engineers building reliable sources for model-accuracy analysis.",
+          ],
+        },
+        {
+          label: "Data platforms and automation",
+          items: [
+            "Built and maintained 40+ data pipelines and automation flows plus 60+ trusted tables supporting optimization, planning reports, and material-health analysis.",
+            "Led the Planned Order Firming migration to Snowflake and automated the end-to-end process, saving 80+ hours weekly.",
+            "Scaled automated re-entrance reporting across product groups, contributing a further 20+ hours of weekly time savings.",
+          ],
+        },
       ],
       metrics: [
         { value: "40+", label: "Data pipelines" },
@@ -157,10 +192,15 @@ export const DATA = {
       end: "Aug 2021",
       description:
         "Supported applied operations research for industry partners through technology scanning, process modelling, and simulation development.",
-      highlights: [
-        "Researched PSA’s operating context and evaluated technologies with potential strategic value.",
-        "Supported a warehouse-simulation project for Huawei by refining entity-flow diagrams and defining path-mover behaviour on a grid layout.",
-        "Implemented the XML backbone that translated warehouse process flows into the simulation model.",
+      highlightGroups: [
+        {
+          label: "Research and simulation",
+          items: [
+            "Researched PSA’s operating context and evaluated technologies with potential strategic value.",
+            "Supported a warehouse-simulation project for Huawei by refining entity-flow diagrams and defining path-mover behaviour on a grid layout.",
+            "Implemented the XML backbone that translated warehouse process flows into the simulation model.",
+          ],
+        },
       ],
       metrics: [
         { value: "PSA", label: "Technology scan" },
@@ -179,6 +219,14 @@ export const DATA = {
       degree: "Bachelor of Engineering, Industrial and Systems Engineering",
       description:
         "Coursework and applied projects across operations research, stochastic optimization, simulation, machine learning, quality engineering, and product delivery.",
+      focusAreas: [
+        "Operations research",
+        "Stochastic optimization",
+        "Simulation",
+        "Machine learning",
+        "Quality engineering",
+        "Product delivery",
+      ],
       logoUrl: "/logos/nus.png",
       start: "2018",
       end: "2022",

@@ -97,25 +97,34 @@ export function WorkSection() {
               </div>
 
               <div className="mt-6 border-t border-border/60 pt-5">
-                <p className="mb-3 font-mono text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                <p className="mb-4 font-mono text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   Selected contributions
                 </p>
-                <ul className="grid gap-3">
-                  {work.highlights.map((highlight) => (
-                    <li
-                      key={highlight}
-                      className="flex gap-3 text-sm leading-6 text-muted-foreground"
-                    >
-                      <span
-                        className="mt-1 flex size-4 shrink-0 items-center justify-center rounded-full text-white"
-                        style={{ backgroundColor: work.accent }}
-                      >
-                        <Check className="size-2.5" strokeWidth={3} aria-hidden />
-                      </span>
-                      <span className="min-w-0 break-words">{highlight}</span>
-                    </li>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  {work.highlightGroups.map((group) => (
+                    <div key={group.label} className="min-w-0">
+                      <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.15em]" style={{ color: work.accent }}>
+                        {group.label}
+                      </p>
+                      <ul className="mt-3 grid gap-3">
+                        {group.items.map((highlight) => (
+                          <li
+                            key={highlight}
+                            className="flex gap-3 text-sm leading-6 text-muted-foreground"
+                          >
+                            <span
+                              className="mt-1 flex size-4 shrink-0 items-center justify-center rounded-full text-white"
+                              style={{ backgroundColor: work.accent }}
+                            >
+                              <Check className="size-2.5" strokeWidth={3} aria-hidden />
+                            </span>
+                            <span className="min-w-0 break-words">{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
 
               {work.activities.length > 0 ? (

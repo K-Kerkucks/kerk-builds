@@ -16,7 +16,7 @@ export function CredentialsSection() {
           href={education.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative overflow-hidden rounded-[1.75rem] border border-border/70 bg-card p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-xl hover:shadow-foreground/[0.04] lg:col-span-5"
+          className="group relative self-start overflow-hidden rounded-[1.75rem] border border-border/70 bg-card p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-xl hover:shadow-foreground/[0.04] lg:col-span-5"
         >
           <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#064b8e] to-[#ef7c00]" />
           <div className="flex items-start justify-between gap-4">
@@ -41,6 +41,18 @@ export function CredentialsSection() {
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             {education.description}
           </p>
+          <div className="mt-6 border-t border-border/60 pt-5">
+            <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              Academic foundations
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {education.focusAreas.map((area) => (
+                <span key={area} className="rounded-full border border-border/70 bg-background px-3 py-1.5 text-xs text-muted-foreground">
+                  {area}
+                </span>
+              ))}
+            </div>
+          </div>
         </Link>
       ))}
 

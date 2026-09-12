@@ -133,7 +133,7 @@ export default function Page() {
       <section id="education" className="project-breakout scroll-mt-12">
         <BlurFade delay={BLUR_FADE_DELAY * 7}>
           <SectionHeading
-            eyebrow="03 / Credentials"
+            eyebrow="03 / Education"
             title="Education and continued learning"
             description="Formal training backed by current, hands-on certifications in data engineering and applied AI for cybersecurity."
           />
@@ -149,8 +149,8 @@ export default function Page() {
         <BlurFade delay={BLUR_FADE_DELAY * 9}>
           <SectionHeading
             eyebrow="04 / Capabilities"
-            title="A cross-functional technical toolkit"
-            description="Comfortable moving between product decisions, AI orchestration, data platforms, and the code that connects them."
+            title="Capabilities applied to real systems"
+            description="The methods I use across data engineering, operational analytics, AI product development, and full-stack delivery."
           />
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 10}>

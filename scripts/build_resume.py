@@ -70,8 +70,14 @@ def set_run(run, *, bold: bool | None = None, size: float = 11.2) -> None:
         run.bold = bold
 
 
-def set_body_paragraph(paragraph, *, after: float = 3, keep_next: bool = False) -> None:
-    paragraph.paragraph_format.space_before = Pt(0)
+def set_body_paragraph(
+    paragraph,
+    *,
+    before: float = 0,
+    after: float = 3,
+    keep_next: bool = False,
+) -> None:
+    paragraph.paragraph_format.space_before = Pt(before)
     paragraph.paragraph_format.space_after = Pt(after)
     paragraph.paragraph_format.line_spacing = 1.05
     paragraph.paragraph_format.keep_with_next = keep_next
@@ -80,8 +86,8 @@ def set_body_paragraph(paragraph, *, after: float = 3, keep_next: bool = False) 
 
 def add_section_heading(doc: Document, label: str) -> None:
     paragraph = doc.add_paragraph()
-    paragraph.paragraph_format.space_before = Pt(9)
-    paragraph.paragraph_format.space_after = Pt(5)
+    paragraph.paragraph_format.space_before = Pt(14)
+    paragraph.paragraph_format.space_after = Pt(7)
     paragraph.paragraph_format.line_spacing = 1.05
     paragraph.paragraph_format.keep_with_next = True
     run = paragraph.add_run(label.upper())
@@ -89,9 +95,9 @@ def add_section_heading(doc: Document, label: str) -> None:
     run.underline = True
 
 
-def add_header_row(doc: Document, label: str, dates: str) -> None:
+def add_header_row(doc: Document, label: str, dates: str, *, before: float = 7) -> None:
     paragraph = doc.add_paragraph()
-    set_body_paragraph(paragraph, after=2, keep_next=True)
+    set_body_paragraph(paragraph, before=before, after=3, keep_next=True)
     paragraph.paragraph_format.tab_stops.add_tab_stop(Inches(7.15), WD_TAB_ALIGNMENT.RIGHT)
     label_run = paragraph.add_run(label)
     set_run(label_run, bold=True, size=11.2)
@@ -105,6 +111,13 @@ def add_plain_paragraph(doc: Document, text: str, *, after: float = 4) -> None:
     set_body_paragraph(paragraph, after=after)
     paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
     set_run(paragraph.add_run(text), size=11.0)
+
+
+def add_subsection_heading(doc: Document, label: str, *, before: float = 5) -> None:
+    paragraph = doc.add_paragraph()
+    set_body_paragraph(paragraph, before=before, after=3, keep_next=True)
+    run = paragraph.add_run(label.upper())
+    set_run(run, bold=True, size=9.6)
 
 
 def add_numbering(paragraph, *, num_id: int = 4, level: int = 0) -> None:
@@ -175,42 +188,62 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
     add_header_row(doc, "National University of Singapore (NUS)", "Aug 2018 to May 2022")
     add_bullet(doc, "Bachelor of Engineering, Industrial and Systems Engineering")
 
-    add_section_heading(doc, "Work Experience")
-    add_header_row(doc, "GovTech  |  Data and AI Engineer", "2024 to Present")
+    add_section_heading(doc, "Professional Experience")
+    add_header_row(doc, "GovTech  |  Data and AI Engineer", "2024 to Present", before=2)
     add_plain_paragraph(
         doc,
-        "I design and ship internal AI products from the data model through to the operating workflow. Two applications are in production today, with more progressing through user acceptance testing.",
-        after=4,
+        "My core scope covers data engineering across five internal projects, including dashboard development, data pipeline delivery and maintenance, optimization, and operational monitoring. I also design and ship internal AI products on top of this foundation.",
+        after=5,
     )
+    add_subsection_heading(doc, "Core data engineering", before=3)
+    for bullet in [
+        "Worked across five internal projects, developing operational dashboards and building, maintaining, and improving data pipelines used by internal teams.",
+        "Developed optimization and monitoring solutions, including pipeline skip detection and volume analysis to surface skipped runs and unexpected processing patterns.",
+    ]:
+        add_bullet(doc, bullet, after=4)
+
+    add_subsection_heading(doc, "AI product engineering", before=5)
     for bullet in [
         "Built a channel-agnostic multi-agent triage platform with configurable pipelines, knowledge-base matching, confidence thresholds, automated replies, human escalation, and auditable state.",
         "Designed an AI-enabled workspace that combines ticket proposals, Kanban workflows, configurable agent profiles, permission boundaries, and cross-workspace operations.",
-        "Applied data engineering principles to production readiness through intentional schemas, dependable persistence, traceable agent decisions, and maintainable integration boundaries.",
-        "Developed an internal real-time pose-detection engine with MediaPipe, together with operational dashboards and Databricks pipelines for production workflows.",
+        "Applied data engineering principles to AI production readiness through intentional schemas, dependable persistence, traceable agent decisions, and maintainable integration boundaries.",
+        "Developed an internal real-time pose-detection engine with MediaPipe for an internal workflow.",
+    ]:
+        add_bullet(doc, bullet, after=4)
+
+    add_subsection_heading(doc, "Internal knowledge sharing", before=5)
+    for bullet in [
         "Presented an internal Databricks brown-bag session on Genie agents and Genie Code, and participated in internal forums and hackathons to share practical AI adoption patterns.",
     ]:
-        add_bullet(doc, bullet)
+        add_bullet(doc, bullet, after=5)
 
-    add_header_row(doc, "Micron Technology  |  Data Science Engineer", "Jun 2022 to 2025")
+    add_header_row(doc, "Micron Technology  |  Data Science Engineer", "Jun 2022 to 2025", before=11)
+    add_subsection_heading(doc, "Optimization and planning", before=3)
     for bullet in [
         "Led supply-chain optimization work for tactical planning and planned-order firming, including improvements that delivered an additional 2-5% cost saving for assembly products while preserving order constraints.",
+        "Directed equipment performance-to-model tracking and coordinated data engineers building reliable sources for model-accuracy analysis.",
+    ]:
+        add_bullet(doc, bullet, after=4)
+
+    add_subsection_heading(doc, "Data platforms and automation", before=5)
+    for bullet in [
         "Built and maintained more than 40 data pipelines and automation flows, together with more than 60 trusted tables for optimization, planning reports, and raw-material health analysis.",
         "Led the Planned Order Firming migration to Snowflake and automated the end-to-end workflow, saving more than 80 hours each week.",
         "Scaled product-assembly re-entrance reporting across product groups, contributing a further 20 hours of weekly time savings.",
-        "Directed equipment performance-to-model tracking and coordinated data engineers building reliable sources for model-accuracy analysis.",
     ]:
-        add_bullet(doc, bullet)
+        add_bullet(doc, bullet, after=4)
 
-    add_header_row(doc, "National University of Singapore  |  Research Intern", "May to Aug 2021")
+    add_header_row(doc, "National University of Singapore  |  Research Intern", "May to Aug 2021", before=11)
+    add_subsection_heading(doc, "Research and simulation", before=3)
     for bullet in [
         "Conducted a technology scan of PSA's operating context and assessed technologies with potential strategic value.",
         "Supported a Huawei warehouse-simulation project by refining entity-flow diagrams and defining grid-based path-mover behaviour.",
         "Implemented the XML backbone that translated warehouse process flows into the simulation model.",
     ]:
-        add_bullet(doc, bullet)
+        add_bullet(doc, bullet, after=4)
 
-    add_section_heading(doc, "Selected AI and Data Products")
-    add_header_row(doc, "Multi-agent triage platform", "Production  |  Internal")
+    add_section_heading(doc, "Selected Internal Products")
+    add_header_row(doc, "Multi-agent triage platform", "Production  |  Internal", before=2)
     add_bullet(
         doc,
         "Classifies unstructured requests, retrieves governed knowledge, scores confidence, and routes each case to an automated response or human review. Versioned knowledge and audit records keep decisions explainable and recoverable.",
@@ -219,16 +252,6 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
     add_bullet(
         doc,
         "Connects AI-assisted ticket proposals with Kanban operations and configurable agents. A durable relational model for workspaces, permissions, tickets, and events supports controlled growth.",
-    )
-    add_header_row(doc, "AI talent matching", "UAT  |  Internal")
-    add_bullet(
-        doc,
-        "Pairs vector similarity with governed identity and role data so recommendations remain explainable and grounded in trusted records.",
-    )
-    add_header_row(doc, "Operational analytics platform", "UAT  |  Internal")
-    add_bullet(
-        doc,
-        "Combines streaming data, anomaly detection, drill-down analysis, and audit trails with freshness checks, lineage, and reproducible transformations.",
     )
 
     add_section_heading(doc, "Certifications")
