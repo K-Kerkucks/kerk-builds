@@ -48,9 +48,9 @@ export default function HomePage() {
 
         <BlurFade delay={0.5}>
           <p className="mt-6 max-w-2xl text-base text-muted-foreground leading-relaxed">
-            Software engineer specialising in full-stack AI products —
-            multi-agent orchestration, real-time data pipelines, and
-            developer-friendly platforms that scale.
+            From supply chain optimization at Micron to building AI platforms at
+            GovTech — I design multi-agent systems, real-time data pipelines,
+            and developer-friendly products that ship and scale.
           </p>
         </BlurFade>
 
@@ -78,10 +78,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-5xl px-6 py-12">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {[
-              { value: 5, label: "Products Built", suffix: "+" },
-              { value: 3, label: "AI Agents Designed", suffix: "+" },
-              { value: 10, label: "Data Pipelines", suffix: "+" },
-              { value: 99, label: "Uptime SLA", suffix: "%" },
+              { value: 5, label: "Products Shipped", suffix: "+" },
+              { value: 40, label: "Data Pipelines", suffix: "+" },
+              { value: 100, label: "Hours Saved Weekly", suffix: "+" },
+              { value: 4, label: "Years Experience", suffix: "+" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-3xl font-bold tabular-nums">
