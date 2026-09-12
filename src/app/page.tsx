@@ -74,10 +74,10 @@ export default function Page() {
                 <Image
                   src={DATA.avatarUrl}
                   alt={`${DATA.name} in a bamboo garden`}
-                  width={1120}
-                  height={1400}
+                  width={1449}
+                  height={2105}
                   priority
-                  className="relative aspect-[4/5] w-full rounded-[2rem] border-4 border-background object-cover shadow-2xl"
+                  className="relative h-auto w-full rounded-[2rem] border-4 border-background shadow-2xl"
                 />
               </div>
             </BlurFade>
