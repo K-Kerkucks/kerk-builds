@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProjectVisual } from "@/components/project-visual";
 import { DATA } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, DatabaseZap } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -55,15 +55,16 @@ export function ProjectsShowcase({ compact = false }: ProjectsShowcaseProps) {
       <div className="mb-8 flex flex-col gap-5 lg:mb-10 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-2xl">
           <div className="mb-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            <span className="h-px w-8 bg-foreground/40" /> Selected systems
+            <span className="h-px w-8 bg-foreground/40" /> 05 / Selected systems
           </div>
           <h2 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-            Products built to move work forward.
+            AI that survives the demo.
           </h2>
         </div>
         <p className="max-w-md text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
-          Scroll through six end-to-end builds—from agentic operations to playful
-          experiments. Each frame captures the problem, system, and outcome.
+          Two internal apps are live in production, with more in UAT. Each one is
+          designed from the data model outward, so speed does not come at the cost
+          of reliability, traceability, or scale.
         </p>
       </div>
 
@@ -145,10 +146,13 @@ export function ProjectsShowcase({ compact = false }: ProjectsShowcaseProps) {
               />
 
               <div className="relative z-10 mb-5 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="size-2 rounded-full" style={{ backgroundColor: project.accent }} />
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                     {project.category}
+                  </span>
+                  <span className="rounded-full border border-border/70 bg-background/50 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                    {project.release}
                   </span>
                 </div>
                 <span className="font-mono text-[10px] text-muted-foreground">{project.dates}</span>
@@ -177,6 +181,23 @@ export function ProjectsShowcase({ compact = false }: ProjectsShowcaseProps) {
                         <p className="line-clamp-3 text-xs leading-5 text-muted-foreground">{copy}</p>
                       </div>
                     ))}
+                  </div>
+
+                  <div className="mt-5 flex gap-3 rounded-2xl border border-border/60 bg-background/35 p-3.5 backdrop-blur-sm">
+                    <span
+                      className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-xl"
+                      style={{ backgroundColor: `${project.accent}1f`, color: project.accent }}
+                    >
+                      <DatabaseZap className="size-4" aria-hidden />
+                    </span>
+                    <div>
+                      <p className="font-mono text-[9px] uppercase tracking-[0.16em]" style={{ color: project.accent }}>
+                        Production lens
+                      </p>
+                      <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                        {project.productionFocus}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mt-6 flex flex-wrap gap-1.5">

@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Download, ArrowLeft, Briefcase, GraduationCap, Award, Wrench } from "lucide-react";
-import { DATA } from "@/lib/data";
-import { Badge } from "@/components/ui/badge";
+import Markdown from "react-markdown";
+import { ArrowLeft, Download, Mail, MapPin } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BlurFadeText } from "@/components/ui/blur-fade-text";
+import { SectionHeading } from "@/components/section-heading";
+import { CredentialsSection } from "@/components/sections/credentials-section";
+import { SkillsSection } from "@/components/sections/skills-section";
+import { WorkSection } from "@/components/sections/work-section";
+import { DATA } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Resume",
@@ -15,157 +19,114 @@ const DELAY = 0.04;
 
 export default function ResumePage() {
   return (
-    <div className="flex flex-col gap-10">
-      {/* Header */}
-      <section className="flex flex-col gap-4">
-        <BlurFade delay={DELAY}>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2 w-fit"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back
-          </Link>
-        </BlurFade>
-
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <BlurFadeText
-              delay={DELAY * 2}
-              className="text-3xl font-bold tracking-tight sm:text-4xl"
-              text={DATA.name}
-            />
-            <BlurFade delay={DELAY * 3}>
-              <p className="text-muted-foreground mt-1">{DATA.description}</p>
-            </BlurFade>
-          </div>
-          <BlurFade delay={DELAY * 2}>
+    <main className="project-breakout flex flex-col gap-20 pb-8 sm:gap-24">
+      <section className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-card p-7 shadow-xl shadow-foreground/[0.035] sm:p-10">
+        <div className="pointer-events-none absolute -right-32 -top-44 size-96 rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.14),transparent_68%)]" />
+        <div className="relative">
+          <BlurFade delay={DELAY}>
             <Link
-              href="/resume.docx"
-              download
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors shrink-0"
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              <Download className="h-4 w-4" />
-              Download
+              <ArrowLeft className="size-4" aria-hidden />
+              Back home
             </Link>
           </BlurFade>
-        </div>
 
-        <BlurFade delay={DELAY * 4}>
-          <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-            <span>{DATA.contact.email}</span>
-            <span className="text-border">|</span>
-            <span>{DATA.location}</span>
-          </div>
-        </BlurFade>
-      </section>
-
-      {/* Work Experience */}
-      <section>
-        <BlurFade delay={DELAY * 5}>
-          <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
-            <Briefcase className="h-4 w-4" /> Work Experience
-          </h2>
-        </BlurFade>
-
-        <div className="flex flex-col gap-6">
-          {DATA.work.map((work, i) => (
-            <BlurFade key={work.company} delay={DELAY * 6 + i * 0.05}>
-              <div className="flex flex-col gap-1">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h3 className="font-semibold">{work.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {work.company} &middot; {work.location}
-                    </p>
-                  </div>
-                  <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap mt-1">
-                    {work.start} — {work.end ?? "Present"}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                  {work.description}
+          <div className="mt-10 grid gap-7 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div>
+              <BlurFadeText
+                delay={DELAY * 2}
+                className="text-4xl font-semibold tracking-[-0.05em] sm:text-6xl"
+                text={DATA.name}
+              />
+              <BlurFade delay={DELAY * 3}>
+                <p className="mt-3 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg">
+                  Data &amp; AI Engineer building production-ready internal products
+                  from intentional data foundations.
                 </p>
-              </div>
+              </BlurFade>
+            </div>
+            <BlurFade delay={DELAY * 3}>
+              <Link
+                href="/resume.docx"
+                download
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
+              >
+                <Download className="size-4" aria-hidden />
+                Download .docx
+              </Link>
             </BlurFade>
-          ))}
+          </div>
+
+          <BlurFade delay={DELAY * 4}>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 border-t border-border/70 pt-5 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5">
+                <Mail className="size-3.5" aria-hidden />
+                {DATA.contact.email}
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin className="size-3.5" aria-hidden />
+                {DATA.location}
+              </span>
+            </div>
+          </BlurFade>
         </div>
       </section>
 
-      {/* Education */}
       <section>
-        <BlurFade delay={DELAY * 9}>
-          <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
-            <GraduationCap className="h-4 w-4" /> Education
-          </h2>
+        <BlurFade delay={DELAY * 4}>
+          <SectionHeading
+            eyebrow="Profile"
+            title="Built for adoption, scale, and operational trust."
+          />
         </BlurFade>
-
-        <div className="flex flex-col gap-4">
-          {DATA.education.map((edu, i) => (
-            <BlurFade key={edu.school} delay={DELAY * 10 + i * 0.05}>
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h3 className="font-semibold">{edu.school}</h3>
-                  <p className="text-sm text-muted-foreground">{edu.degree}</p>
-                </div>
-                <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap mt-1">
-                  {edu.start} — {edu.end}
-                </span>
-              </div>
-            </BlurFade>
-          ))}
-        </div>
-      </section>
-
-      {/* Skills */}
-      <section>
-        <BlurFade delay={DELAY * 11}>
-          <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
-            <Wrench className="h-4 w-4" /> Skills
-          </h2>
-        </BlurFade>
-
-        <BlurFade delay={DELAY * 12}>
-          <div className="flex flex-wrap gap-1.5">
-            {DATA.skills.map((skill) => (
-              <Badge key={skill} variant="outline" className="text-xs">
-                {skill}
-              </Badge>
-            ))}
+        <BlurFade delay={DELAY * 5}>
+          <div className="prose mt-7 max-w-4xl text-pretty font-sans text-base leading-8 text-muted-foreground dark:prose-invert">
+            <Markdown>{DATA.summary}</Markdown>
           </div>
         </BlurFade>
       </section>
 
-      {/* Certifications */}
       <section>
-        <BlurFade delay={DELAY * 13}>
-          <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
-            <Award className="h-4 w-4" /> Certifications
-          </h2>
+        <BlurFade delay={DELAY * 6}>
+          <SectionHeading
+            eyebrow="Experience"
+            title="Selected professional work."
+            description="Delivery details, production outcomes, and the data-engineering foundations behind each role."
+          />
         </BlurFade>
-
-        <BlurFade delay={DELAY * 14}>
-          <ul className="text-sm text-muted-foreground space-y-1">
-            <li>AI4I — Literacy & Foundation in AI</li>
-          </ul>
+        <BlurFade delay={DELAY * 7}>
+          <div className="mt-8">
+            <WorkSection />
+          </div>
         </BlurFade>
       </section>
 
-      {/* Download CTA */}
-      <BlurFade delay={DELAY * 15}>
-        <div className="border-t border-border pt-6 text-center">
-          <Link
-            href="/resume.docx"
-            download
-            className="inline-flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-6 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors"
-          >
-            <Download className="h-4 w-4" />
-            Download Resume
-          </Link>
-          <p className="text-xs text-muted-foreground mt-2">
-            .docx format
-          </p>
-        </div>
-      </BlurFade>
-    </div>
+      <section>
+        <BlurFade delay={DELAY * 8}>
+          <SectionHeading
+            eyebrow="Credentials"
+            title="Education and certifications."
+          />
+        </BlurFade>
+        <BlurFade delay={DELAY * 9}>
+          <div className="mt-8">
+            <CredentialsSection />
+          </div>
+        </BlurFade>
+      </section>
+
+      <section>
+        <BlurFade delay={DELAY * 10}>
+          <SectionHeading eyebrow="Capabilities" title="Technical toolkit." />
+        </BlurFade>
+        <BlurFade delay={DELAY * 11}>
+          <div className="mt-7">
+            <SkillsSection />
+          </div>
+        </BlurFade>
+      </section>
+    </main>
   );
 }

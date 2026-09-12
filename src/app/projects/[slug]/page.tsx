@@ -4,7 +4,7 @@ import { DATA } from "@/lib/data";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Badge } from "@/components/ui/badge";
 import { ProjectVisual } from "@/components/project-visual";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, DatabaseZap } from "lucide-react";
 import Link from "next/link";
 
 function slugify(title: string) {
@@ -53,7 +53,7 @@ export default async function ProjectPage({
         <BlurFade delay={0.05}>
           <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             <span className="size-2 rounded-full" style={{ backgroundColor: project.accent }} />
-            {project.category} · {project.dates}
+            {project.category} · {project.dates} · {project.release}
           </div>
           <h1 className="mt-5 text-5xl font-semibold tracking-[-0.05em] sm:text-6xl lg:text-7xl">
             {project.title}
@@ -89,6 +89,28 @@ export default async function ProjectPage({
           </BlurFade>
         ))}
       </div>
+
+      <BlurFade delay={0.25}>
+        <section className="mt-6 grid gap-5 rounded-3xl border border-border/70 bg-card p-7 sm:p-9 md:grid-cols-[auto_1fr]">
+          <span
+            className="grid size-12 place-items-center rounded-2xl"
+            style={{ backgroundColor: `${project.accent}1f`, color: project.accent }}
+          >
+            <DatabaseZap className="size-5" aria-hidden />
+          </span>
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: project.accent }}>
+              Production-readiness by design
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">
+              The data model is part of the product.
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
+              {project.productionFocus}
+            </p>
+          </div>
+        </section>
+      </BlurFade>
     </main>
   );
 }
