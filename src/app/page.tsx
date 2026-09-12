@@ -5,6 +5,7 @@ import Markdown from "react-markdown";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BlurFadeText } from "@/components/ui/blur-fade-text";
 import { SectionHeading } from "@/components/section-heading";
+import { SectionNavigator } from "@/components/section-navigator";
 import { ContactSection } from "@/components/sections/contact-section";
 import { CredentialsSection } from "@/components/sections/credentials-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
@@ -17,6 +18,7 @@ const BLUR_FADE_DELAY = 0.04;
 export default function Page() {
   return (
     <main className="relative flex min-h-dvh flex-col gap-24 pb-8 sm:gap-28">
+      <SectionNavigator />
       <section id="hero" className="project-breakout">
         <div className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-card px-6 py-10 shadow-xl shadow-foreground/[0.035] sm:px-10 sm:py-14 lg:px-14 lg:py-16">
           <div className="pointer-events-none absolute -right-40 -top-52 size-[32rem] rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.18),transparent_68%)]" />

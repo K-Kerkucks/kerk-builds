@@ -49,8 +49,8 @@ export default function ResumePage() {
             </div>
             <BlurFade delay={DELAY * 3}>
               <Link
-                href="/resume.docx"
-                download
+                href="/Kerk_Zhi_Sheng_Resume.docx"
+                download="Kerk_Zhi_Sheng_Resume.docx"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
               >
                 <Download className="size-4" aria-hidden />

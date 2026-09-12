@@ -1,352 +1,252 @@
-"""Build the downloadable resume used by the portfolio site."""
+"""Build the downloadable resume from Kerk's original resume template."""
+
+from __future__ import annotations
 
 from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
+import hashlib
+import shutil
 import sys
+import tempfile
 
 from docx import Document
-from docx.enum.section import WD_SECTION
-from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
 
-ACCENT = "0E7490"
-INK = RGBColor(24, 24, 27)
-MUTED = RGBColor(82, 82, 91)
-SOFT = "F4F4F5"
+DEFAULT_TEMPLATE = Path("/Users/KERK_Zhi_Sheng/Downloads/Resume - Kerk Zhi Sheng.docx")
+EXPECTED_TEMPLATE_SHA256 = "dac8d03db16337fc2a712d4b21697bedb7641ab6476f0d0202f11cbeea9e702f"
+DEFAULT_OUTPUT = Path("public/Kerk_Zhi_Sheng_Resume.docx")
+PRESERVE_PARTS = {
+    "[Content_Types].xml",
+    "_rels/.rels",
+    "customXML/_rels/item1.xml.rels",
+    "customXML/item1.xml",
+    "customXML/itemProps1.xml",
+    "word/_rels/document.xml.rels",
+    "word/_rels/fontTable.xml.rels",
+    "word/fontTable.xml",
+    "word/fonts/NotoSansSymbols-bold.ttf",
+    "word/fonts/NotoSansSymbols-regular.ttf",
+    "word/footer1.xml",
+    "word/footer2.xml",
+    "word/footer3.xml",
+    "word/header1.xml",
+    "word/header2.xml",
+    "word/header3.xml",
+    "word/media/image1.png",
+    "word/numbering.xml",
+    "word/settings.xml",
+    "word/styles.xml",
+    "word/theme/theme1.xml",
+}
 
 
-def set_cell_shading(cell, fill: str) -> None:
-    tc_pr = cell._tc.get_or_add_tcPr()
-    shd = tc_pr.find(qn("w:shd"))
-    if shd is None:
-        shd = OxmlElement("w:shd")
-        tc_pr.append(shd)
-    shd.set(qn("w:fill"), fill)
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
-def set_cell_margins(cell, top=90, start=120, bottom=90, end=120) -> None:
-    tc = cell._tc
-    tc_pr = tc.get_or_add_tcPr()
-    tc_mar = tc_pr.first_child_found_in("w:tcMar")
-    if tc_mar is None:
-        tc_mar = OxmlElement("w:tcMar")
-        tc_pr.append(tc_mar)
-    for margin, value in (("top", top), ("start", start), ("bottom", bottom), ("end", end)):
-        node = tc_mar.find(qn(f"w:{margin}"))
-        if node is None:
-            node = OxmlElement(f"w:{margin}")
-            tc_mar.append(node)
-        node.set(qn("w:w"), str(value))
-        node.set(qn("w:type"), "dxa")
+def clear_after_header(doc: Document) -> None:
+    """Keep the source name, rule, contact row, and spacer; replace the body."""
+    body = doc._element.body
+    section_properties = body.sectPr
+    children = list(body)
+    for child in children[3:]:
+        if child is not section_properties:
+            body.remove(child)
 
 
-def set_table_borders(table, color="D4D4D8", size="4") -> None:
-    tbl_pr = table._tbl.tblPr
-    borders = tbl_pr.first_child_found_in("w:tblBorders")
-    if borders is None:
-        borders = OxmlElement("w:tblBorders")
-        tbl_pr.append(borders)
-    for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
-        tag = f"w:{edge}"
-        element = borders.find(qn(tag))
-        if element is None:
-            element = OxmlElement(tag)
-            borders.append(element)
-        element.set(qn("w:val"), "single")
-        element.set(qn("w:sz"), size)
-        element.set(qn("w:color"), color)
+def set_run(run, *, bold: bool | None = None, size: float = 11.2) -> None:
+    run.font.name = "Times New Roman"
+    run.font.size = Pt(size)
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    if bold is not None:
+        run.bold = bold
 
 
-def add_bottom_rule(paragraph, color=ACCENT, size="10") -> None:
-    p_pr = paragraph._p.get_or_add_pPr()
-    p_bdr = p_pr.find(qn("w:pBdr"))
-    if p_bdr is None:
-        p_bdr = OxmlElement("w:pBdr")
-        p_pr.append(p_bdr)
-    bottom = OxmlElement("w:bottom")
-    bottom.set(qn("w:val"), "single")
-    bottom.set(qn("w:sz"), size)
-    bottom.set(qn("w:space"), "5")
-    bottom.set(qn("w:color"), color)
-    p_bdr.append(bottom)
+def set_body_paragraph(paragraph, *, after: float = 3, keep_next: bool = False) -> None:
+    paragraph.paragraph_format.space_before = Pt(0)
+    paragraph.paragraph_format.space_after = Pt(after)
+    paragraph.paragraph_format.line_spacing = 1.05
+    paragraph.paragraph_format.keep_with_next = keep_next
+    paragraph.paragraph_format.widow_control = True
 
 
 def add_section_heading(doc: Document, label: str) -> None:
     paragraph = doc.add_paragraph()
-    paragraph.paragraph_format.space_before = Pt(8)
+    paragraph.paragraph_format.space_before = Pt(9)
     paragraph.paragraph_format.space_after = Pt(5)
+    paragraph.paragraph_format.line_spacing = 1.05
     paragraph.paragraph_format.keep_with_next = True
     run = paragraph.add_run(label.upper())
-    run.font.name = "Aptos Display"
-    run.font.size = Pt(11.5)
-    run.font.bold = True
-    run.font.color.rgb = INK
-    run.font.letter_spacing = Pt(0.7)
-    add_bottom_rule(paragraph)
+    set_run(run, bold=True, size=11.5)
+    run.underline = True
 
 
-def add_role_header(doc: Document, role: str, organisation: str, dates: str) -> None:
-    table = doc.add_table(rows=1, cols=2)
-    table.autofit = False
-    table.columns[0].width = Inches(5.6)
-    table.columns[1].width = Inches(1.45)
-    left, right = table.rows[0].cells
-    for cell in (left, right):
-        set_cell_margins(cell, top=0, start=0, bottom=0, end=0)
-        cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
-
-    p = left.paragraphs[0]
-    p.paragraph_format.space_after = Pt(0)
-    p.paragraph_format.keep_with_next = True
-    role_run = p.add_run(role)
-    role_run.bold = True
-    role_run.font.size = Pt(10.5)
-    role_run.font.color.rgb = INK
-    company_run = p.add_run(f"  |  {organisation}")
-    company_run.font.size = Pt(9.4)
-    company_run.font.color.rgb = MUTED
-
-    p = right.paragraphs[0]
-    p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    p.paragraph_format.space_after = Pt(0)
-    p.paragraph_format.keep_with_next = True
-    run = p.add_run(dates)
-    run.bold = True
-    run.font.size = Pt(8.6)
-    run.font.color.rgb = MUTED
-
-
-def add_bullet(doc: Document, text: str, spacing=2.2) -> None:
+def add_header_row(doc: Document, label: str, dates: str) -> None:
     paragraph = doc.add_paragraph()
-    paragraph.paragraph_format.left_indent = Inches(0.16)
-    paragraph.paragraph_format.first_line_indent = Inches(-0.14)
-    paragraph.paragraph_format.space_after = Pt(spacing)
-    paragraph.paragraph_format.line_spacing = 1.08
-    paragraph.add_run("• ").font.color.rgb = RGBColor.from_string(ACCENT)
-    run = paragraph.add_run(text)
-    run.font.size = Pt(8.8)
-    run.font.color.rgb = MUTED
+    set_body_paragraph(paragraph, after=2, keep_next=True)
+    paragraph.paragraph_format.tab_stops.add_tab_stop(Inches(7.15), WD_TAB_ALIGNMENT.RIGHT)
+    label_run = paragraph.add_run(label)
+    set_run(label_run, bold=True, size=11.2)
+    paragraph.add_run("\t")
+    date_run = paragraph.add_run(dates)
+    set_run(date_run, bold=True, size=11.2)
 
 
-def add_compact_item(doc: Document, title: str, status: str, body: str) -> None:
+def add_plain_paragraph(doc: Document, text: str, *, after: float = 4) -> None:
     paragraph = doc.add_paragraph()
-    paragraph.paragraph_format.space_after = Pt(3)
-    paragraph.paragraph_format.keep_with_next = False
-    title_run = paragraph.add_run(title)
-    title_run.bold = True
-    title_run.font.size = Pt(9)
-    title_run.font.color.rgb = INK
-    status_run = paragraph.add_run(f"  {status}  ")
-    status_run.bold = True
-    status_run.font.size = Pt(7.7)
-    status_run.font.color.rgb = RGBColor.from_string(ACCENT)
-    body_run = paragraph.add_run(body)
-    body_run.font.size = Pt(8.6)
-    body_run.font.color.rgb = MUTED
+    set_body_paragraph(paragraph, after=after)
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    set_run(paragraph.add_run(text), size=11.0)
 
 
-def build_resume(output_path: Path) -> None:
-    doc = Document()
-    section = doc.sections[0]
-    section.page_width = Inches(8.27)
-    section.page_height = Inches(11.69)
-    section.top_margin = Inches(0.52)
-    section.bottom_margin = Inches(0.48)
-    section.left_margin = Inches(0.62)
-    section.right_margin = Inches(0.62)
+def add_numbering(paragraph, *, num_id: int = 4, level: int = 0) -> None:
+    paragraph_properties = paragraph._p.get_or_add_pPr()
+    numbering_properties = paragraph_properties.find(qn("w:numPr"))
+    if numbering_properties is None:
+        numbering_properties = OxmlElement("w:numPr")
+        paragraph_properties.insert(0, numbering_properties)
+    level_node = OxmlElement("w:ilvl")
+    level_node.set(qn("w:val"), str(level))
+    num_node = OxmlElement("w:numId")
+    num_node.set(qn("w:val"), str(num_id))
+    numbering_properties.append(level_node)
+    numbering_properties.append(num_node)
 
-    normal = doc.styles["Normal"]
-    normal.font.name = "Aptos"
-    normal.font.size = Pt(9)
-    normal.font.color.rgb = MUTED
-    normal.paragraph_format.space_after = Pt(3)
 
-    name = doc.add_paragraph()
-    name.paragraph_format.space_after = Pt(1)
-    name_run = name.add_run("KERK ZHI SHENG")
-    name_run.font.name = "Aptos Display"
-    name_run.font.size = Pt(25)
-    name_run.font.bold = True
-    name_run.font.color.rgb = INK
+def add_bullet(doc: Document, text: str, *, after: float = 3.5, bold_lead: str | None = None) -> None:
+    paragraph = doc.add_paragraph()
+    set_body_paragraph(paragraph, after=after)
+    paragraph.paragraph_format.left_indent = Inches(0.25)
+    paragraph.paragraph_format.first_line_indent = Inches(-0.25)
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    add_numbering(paragraph, num_id=4, level=0)
+    if bold_lead:
+        lead = paragraph.add_run(bold_lead)
+        set_run(lead, bold=True, size=11.0)
+    set_run(paragraph.add_run(text), size=11.0)
 
-    title = doc.add_paragraph()
-    title.paragraph_format.space_after = Pt(4)
-    title_run = title.add_run("DATA & AI ENGINEER  ·  PRODUCTION AI PRODUCT BUILDER")
-    title_run.font.name = "Aptos"
-    title_run.font.size = Pt(9.3)
-    title_run.font.bold = True
-    title_run.font.color.rgb = RGBColor.from_string(ACCENT)
 
-    contact = doc.add_paragraph()
-    contact.paragraph_format.space_after = Pt(6)
-    contact_run = contact.add_run(
-        "Singapore  ·  +65 8188 7419  ·  zhishengkerk@gmail.com  ·  kerkzhisheng.com  ·  linkedin.com/in/kerk-zhi-sheng-59060a171"
+def restore_preserve_only_parts(reference: Path, generated: Path) -> None:
+    """Restore template-owned package parts byte-for-byte after python-docx saves."""
+    with ZipFile(reference) as reference_zip, ZipFile(generated) as generated_zip:
+        generated_parts = {name: generated_zip.read(name) for name in generated_zip.namelist()}
+        for part in PRESERVE_PARTS:
+            generated_parts[part] = reference_zip.read(part)
+
+    with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as handle:
+        temporary_path = Path(handle.name)
+    try:
+        with ZipFile(temporary_path, "w", ZIP_DEFLATED) as output_zip:
+            for name, data in generated_parts.items():
+                output_zip.writestr(name, data)
+        shutil.move(temporary_path, generated)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+
+
+def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> None:
+    if not template_path.exists():
+        raise FileNotFoundError(f"Resume template not found: {template_path}")
+    template_hash = sha256(template_path)
+    if template_hash != EXPECTED_TEMPLATE_SHA256:
+        raise ValueError(f"Template changed unexpectedly: {template_hash}")
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(template_path, output_path)
+    doc = Document(output_path)
+    clear_after_header(doc)
+
+    contact = doc.paragraphs[1]
+    contact.paragraph_format.space_after = Pt(3)
+    contact.paragraph_format.tab_stops.add_tab_stop(Inches(3.0), WD_TAB_ALIGNMENT.LEFT)
+    contact.text = "Email: zhishengkerk@gmail.com\tMobile: +65 8188 7419"
+    for run in contact.runs:
+        set_run(run, size=11.2)
+
+    add_section_heading(doc, "Education")
+    add_header_row(doc, "National University of Singapore (NUS)", "Aug 2018 to May 2022")
+    add_bullet(doc, "Bachelor of Engineering, Industrial and Systems Engineering")
+
+    add_section_heading(doc, "Work Experience")
+    add_header_row(doc, "GovTech  |  Data and AI Engineer", "2024 to Present")
+    add_plain_paragraph(
+        doc,
+        "I design and ship internal AI products from the data model through to the operating workflow. Two applications are in production today, with more progressing through user acceptance testing.",
+        after=4,
     )
-    contact_run.font.size = Pt(8.1)
-    contact_run.font.color.rgb = MUTED
-    add_bottom_rule(contact, color="D4D4D8", size="5")
-
-    add_section_heading(doc, "Professional profile")
-    profile = doc.add_paragraph()
-    profile.paragraph_format.space_after = Pt(5)
-    profile.paragraph_format.line_spacing = 1.12
-    profile.add_run(
-        "I am a data engineer who also builds AI products end to end. I turn internal operational problems into dependable systems by combining multi-agent workflows, full-stack delivery, and intentional database design. Two internal AI applications are in production today, with more progressing through UAT. I focus on the foundations that turn a convincing demo into a product people can rely on: durable state, governed data, traceable decisions, clear permissions, and maintainable integrations."
-    )
-
-    snapshot = doc.add_table(rows=1, cols=4)
-    snapshot.autofit = False
-    snapshot.width = Inches(7.03)
-    set_table_borders(snapshot, color="E4E4E7", size="4")
-    for cell, (value, label) in zip(
-        snapshot.rows[0].cells,
-        [
-            ("2", "internal AI apps live"),
-            ("40+", "data pipelines built"),
-            ("100+", "hours saved weekly"),
-            ("2-5%", "additional cost saving"),
-        ],
-    ):
-        set_cell_shading(cell, SOFT)
-        set_cell_margins(cell, top=95, start=115, bottom=95, end=115)
-        p = cell.paragraphs[0]
-        p.paragraph_format.space_after = Pt(0)
-        value_run = p.add_run(value)
-        value_run.bold = True
-        value_run.font.size = Pt(13)
-        value_run.font.color.rgb = INK
-        p.add_run("\n")
-        label_run = p.add_run(label)
-        label_run.font.size = Pt(7.6)
-        label_run.font.color.rgb = MUTED
-
-    add_section_heading(doc, "Professional experience")
-    add_role_header(doc, "Data & AI Engineer", "GovTech", "2024 to Present")
     for bullet in [
-        "Ship internal AI products end to end, from data model and workflow design through deployment and adoption; two applications are live in production and additional systems are in UAT.",
         "Built a channel-agnostic multi-agent triage platform with configurable pipelines, knowledge-base matching, confidence thresholds, automated replies, human escalation, and auditable state.",
-        "Designed an AI-enabled workspace combining ticket proposals, Kanban workflows, configurable agent profiles, permission boundaries, and cross-workspace operations.",
-        "Apply production-readiness principles at the database layer: intentional schemas, dependable persistence, traceable agent decisions, clear ownership, and maintainable integration boundaries.",
-        "Developed an internal real-time pose-detection engine with MediaPipe plus operational dashboards and Databricks pipelines for production workflows.",
-        "Presented an internal Databricks brown-bag session on Genie agents and Genie Code, and participated in internal forums and hackathons to spread practical AI adoption patterns.",
+        "Designed an AI-enabled workspace that combines ticket proposals, Kanban workflows, configurable agent profiles, permission boundaries, and cross-workspace operations.",
+        "Applied data engineering principles to production readiness through intentional schemas, dependable persistence, traceable agent decisions, and maintainable integration boundaries.",
+        "Developed an internal real-time pose-detection engine with MediaPipe, together with operational dashboards and Databricks pipelines for production workflows.",
+        "Presented an internal Databricks brown-bag session on Genie agents and Genie Code, and participated in internal forums and hackathons to share practical AI adoption patterns.",
     ]:
         add_bullet(doc, bullet)
 
-    add_role_header(doc, "Data Science Engineer", "Micron Technology", "Jun 2022 to 2025")
+    add_header_row(doc, "Micron Technology  |  Data Science Engineer", "Jun 2022 to 2025")
     for bullet in [
-        "Served as technical lead for supply-chain optimization initiatives supporting tactical planning and planned-order firming.",
-        "Improved the tactical-planning optimizer to deliver an additional 2-5% cost saving for assembly products while satisfying order and operational constraints.",
-        "Built and maintained 40+ data pipelines and automation flows plus 60+ trusted tables for optimization, planning reports, and raw-material health analysis.",
+        "Led supply-chain optimization work for tactical planning and planned-order firming, including improvements that delivered an additional 2-5% cost saving for assembly products while preserving order constraints.",
+        "Built and maintained more than 40 data pipelines and automation flows, together with more than 60 trusted tables for optimization, planning reports, and raw-material health analysis.",
         "Led the Planned Order Firming migration to Snowflake and automated the end-to-end workflow, saving more than 80 hours each week.",
-        "Scaled product-assembly re-entrance reporting across product groups, saving a further 20+ hours weekly; also led equipment performance-to-model reporting and model-accuracy data work.",
+        "Scaled product-assembly re-entrance reporting across product groups, contributing a further 20 hours of weekly time savings.",
+        "Directed equipment performance-to-model tracking and coordinated data engineers building reliable sources for model-accuracy analysis.",
     ]:
         add_bullet(doc, bullet)
 
-    add_section_heading(doc, "Earlier experience")
-    add_role_header(doc, "Research Intern (C4NGP/C4NGL)", "National University of Singapore", "May to Aug 2021")
+    add_header_row(doc, "National University of Singapore  |  Research Intern", "May to Aug 2021")
     for bullet in [
-        "Conducted a technology scan of PSA’s operating context and assessed technologies with potential strategic value.",
+        "Conducted a technology scan of PSA's operating context and assessed technologies with potential strategic value.",
         "Supported a Huawei warehouse-simulation project by refining entity-flow diagrams and defining grid-based path-mover behaviour.",
         "Implemented the XML backbone that translated warehouse process flows into the simulation model.",
     ]:
         add_bullet(doc, bullet)
 
-    doc.add_page_break()
-
-    add_section_heading(doc, "Selected AI & data products")
-    add_compact_item(
+    add_section_heading(doc, "Selected AI and Data Products")
+    add_header_row(doc, "Multi-agent triage platform", "Production  |  Internal")
+    add_bullet(
         doc,
-        "Multi-agent triage platform",
-        "PRODUCTION · INTERNAL",
-        "Classifies unstructured requests, retrieves governed knowledge, scores confidence, and routes to automated response or human review; versioned knowledge and audit records make decisions explainable and recoverable.",
+        "Classifies unstructured requests, retrieves governed knowledge, scores confidence, and routes each case to an automated response or human review. Versioned knowledge and audit records keep decisions explainable and recoverable.",
     )
-    add_compact_item(
+    add_header_row(doc, "AI workspace platform", "Production  |  Internal")
+    add_bullet(
         doc,
-        "AI workspace platform",
-        "PRODUCTION · INTERNAL",
-        "Connects AI-assisted ticket proposals with Kanban operations and configurable agents; a durable relational model for workspaces, permissions, tickets, and events supports controlled scale.",
+        "Connects AI-assisted ticket proposals with Kanban operations and configurable agents. A durable relational model for workspaces, permissions, tickets, and events supports controlled growth.",
     )
-    add_compact_item(
+    add_header_row(doc, "AI talent matching", "UAT  |  Internal")
+    add_bullet(
         doc,
-        "Semantic talent matching",
-        "UAT · INTERNAL",
-        "Pairs vector similarity with governed relational identity and role data so recommendations remain explainable and grounded in trusted records.",
+        "Pairs vector similarity with governed identity and role data so recommendations remain explainable and grounded in trusted records.",
     )
-    add_compact_item(
+    add_header_row(doc, "Operational analytics platform", "UAT  |  Internal")
+    add_bullet(
         doc,
-        "Operational analytics platform",
-        "UAT · INTERNAL",
-        "Unifies streaming data, anomaly detection, drill-down analysis, and audit trails with freshness checks, lineage, and reproducible transformations.",
+        "Combines streaming data, anomaly detection, drill-down analysis, and audit trails with freshness checks, lineage, and reproducible transformations.",
     )
-
-    add_section_heading(doc, "Education")
-    add_role_header(
-        doc,
-        "Bachelor of Engineering, Industrial and Systems Engineering",
-        "National University of Singapore",
-        "2018 to 2022",
-    )
-    education = doc.add_paragraph(
-        "Operations research, stochastic optimization, simulation, machine learning, quality engineering, and product delivery. Academic work included fulfilment network optimization with Gurobi, RNN/LSTM airline analysis, and warehouse/shuttle simulation."
-    )
-    education.paragraph_format.space_after = Pt(3)
-    education.runs[0].font.size = Pt(8.6)
 
     add_section_heading(doc, "Certifications")
-    cert_table = doc.add_table(rows=3, cols=2)
-    cert_table.autofit = False
-    cert_table.columns[0].width = Inches(5.45)
-    cert_table.columns[1].width = Inches(1.58)
-    certs = [
-        ("Databricks Certified Data Engineer Associate  ·  Credential 166618858", "Nov 2025 to Nov 2027"),
-        ("DART: AI for Cybersecurity Practitioners", "Earned 31 Aug 2026"),
-        ("AI Singapore: AI for Industry® Literacy in AI  ·  ID 32518583", "16 May 2021"),
-    ]
-    for row, (name_text, date_text) in zip(cert_table.rows, certs):
-        for cell in row.cells:
-            set_cell_margins(cell, top=35, start=0, bottom=35, end=0)
-        left, right = row.cells
-        left.paragraphs[0].add_run(name_text).bold = True
-        left.paragraphs[0].runs[0].font.size = Pt(8.4)
-        right.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        right.paragraphs[0].add_run(date_text)
-        right.paragraphs[0].runs[0].font.size = Pt(8)
-        right.paragraphs[0].runs[0].font.color.rgb = MUTED
+    add_bullet(doc, "Databricks Certified Data Engineer Associate, Credential 166618858, valid Nov 2025 to Nov 2027")
+    add_bullet(doc, "DART AI for Cybersecurity Practitioners, earned 31 Aug 2026")
+    add_bullet(doc, "AI Singapore AI for Industry® Literacy in AI, ID 32518583, earned 16 May 2021")
 
-    add_section_heading(doc, "Technical capabilities")
-    skills = doc.add_paragraph()
-    skills.paragraph_format.space_after = Pt(0)
-    skill_groups = [
-        ("AI systems", "LLM orchestration, multi-agent systems, RAG, AI agents"),
-        ("Data platforms", "Databricks, Snowflake, PostgreSQL, NiFi, SQL, ETL"),
-        ("Product engineering", "TypeScript, React, Next.js, Node.js, Docker"),
-        ("Analytics", "Python, Tableau, R, optimization, simulation"),
-    ]
-    for index, (label, values) in enumerate(skill_groups):
-        label_run = skills.add_run(f"{label}: ")
-        label_run.bold = True
-        label_run.font.size = Pt(8.4)
-        label_run.font.color.rgb = INK
-        values_run = skills.add_run(values)
-        values_run.font.size = Pt(8.4)
-        values_run.font.color.rgb = MUTED
-        if index < len(skill_groups) - 1:
-            skills.add_run("   ·   ")
+    add_section_heading(doc, "Skills")
+    add_bullet(doc, "LLM orchestration, multi-agent systems, retrieval-augmented generation, and AI agents", bold_lead="AI systems: ")
+    add_bullet(doc, "Databricks, Snowflake, PostgreSQL, NiFi, SQL, and ETL", bold_lead="Data platforms: ")
+    add_bullet(doc, "TypeScript, React, Next.js, Node.js, and Docker", bold_lead="Product engineering: ")
+    add_bullet(doc, "Python, Tableau, R, optimization, and simulation", bold_lead="Analytics: ")
 
-    footer = section.footer.paragraphs[0]
-    footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    footer_run = footer.add_run("KERK ZHI SHENG  ·  RESUME")
-    footer_run.font.name = "Aptos"
-    footer_run.font.size = Pt(7)
-    footer_run.font.color.rgb = RGBColor(161, 161, 170)
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
     doc.save(output_path)
+    restore_preserve_only_parts(template_path, output_path)
 
 
 if __name__ == "__main__":
-    destination = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("public/resume.docx")
-    build_resume(destination)
+    destination = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_OUTPUT
+    source = Path(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_TEMPLATE
+    build_resume(destination, source)

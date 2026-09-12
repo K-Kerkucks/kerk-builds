@@ -50,6 +50,9 @@ export function ProjectsShowcase({ compact = false }: ProjectsShowcaseProps) {
     if (closest.index !== activeIndex) setActiveIndex(closest.index);
   };
 
+  const atLastProject = activeIndex === DATA.projects.length - 1;
+  const nextProjectIndex = atLastProject ? 0 : activeIndex + 1;
+
   return (
     <div className="project-breakout">
       <div className="mb-8 flex flex-col gap-5 lg:mb-10 lg:flex-row lg:items-end lg:justify-between">
@@ -105,8 +108,23 @@ export function ProjectsShowcase({ compact = false }: ProjectsShowcaseProps) {
             ))}
           </nav>
 
-          <div className="mt-auto hidden items-center gap-2 pt-8 font-mono text-[10px] uppercase tracking-widest text-muted-foreground lg:flex">
-            <ArrowDown className="size-3.5 animate-bounce" /> Scroll to explore
+          <div className="hidden pt-6 lg:block">
+            <p className="font-mono text-[9px] uppercase leading-4 tracking-[0.16em] text-muted-foreground">
+              Scroll inside the project panel
+            </p>
+            <button
+              type="button"
+              onClick={() => scrollToProject(nextProjectIndex)}
+              className="group mt-3 flex items-center gap-2 text-left text-xs font-medium text-foreground"
+            >
+              <span className="grid size-7 place-items-center rounded-full border border-border transition-colors group-hover:bg-muted">
+                <ArrowDown
+                  className={cn("size-3.5 transition-transform", atLastProject && "rotate-180")}
+                  aria-hidden
+                />
+              </span>
+              {atLastProject ? "Back to first project" : "Next project"}
+            </button>
           </div>
         </aside>
 
