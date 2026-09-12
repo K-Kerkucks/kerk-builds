@@ -141,7 +141,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="projects">
+      <section id="projects" className="scroll-mt-10">
         <BlurFade delay={BLUR_FADE_DELAY * 11}>
           <ProjectsSection />
         </BlurFade>

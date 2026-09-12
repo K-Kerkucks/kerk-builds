@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { DATA } from "@/lib/data";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Badge } from "@/components/ui/badge";
-import Markdown from "react-markdown";
+import { ProjectVisual } from "@/components/project-visual";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 function slugify(title: string) {
   return title.toLowerCase().replace(/\s+/g, "-");
@@ -37,33 +39,56 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <div className="flex flex-col gap-8">
-      <BlurFade delay={0.04}>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {project.title}
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">{project.dates}</p>
+    <main className="project-breakout">
+      <BlurFade delay={0.03}>
+        <Link
+          href="/projects"
+          className="mb-10 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" /> All projects
+        </Link>
       </BlurFade>
 
-      <BlurFade delay={0.08}>
-        <div className="flex flex-wrap gap-1">
-          {project.technologies.map((tag) => (
-            <Badge
-              key={tag}
-              className="text-[11px] font-medium border border-border h-6 w-fit px-2"
-              variant="outline"
-            >
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      </BlurFade>
+      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <BlurFade delay={0.05}>
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            <span className="size-2 rounded-full" style={{ backgroundColor: project.accent }} />
+            {project.category} · {project.dates}
+          </div>
+          <h1 className="mt-5 text-5xl font-semibold tracking-[-0.05em] sm:text-6xl lg:text-7xl">
+            {project.title}
+          </h1>
+          <p className="mt-6 max-w-xl text-pretty text-lg leading-8 text-muted-foreground">
+            {project.description}
+          </p>
+          <div className="mt-7 flex flex-wrap gap-2">
+            {project.technologies.map((tag) => (
+              <Badge key={tag} className="rounded-full px-3 py-1" variant="outline">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        </BlurFade>
 
-      <BlurFade delay={0.12}>
-        <div className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
-          <Markdown>{project.description}</Markdown>
-        </div>
-      </BlurFade>
-    </div>
+        <BlurFade delay={0.1} className="h-[360px] sm:h-[440px]">
+          <ProjectVisual kind={project.visual} title={project.title} accent={project.accent} />
+        </BlurFade>
+      </div>
+
+      <div className="mt-20 grid gap-px overflow-hidden rounded-3xl border bg-border md:grid-cols-3">
+        {[
+          ["01 / Challenge", project.challenge],
+          ["02 / System", project.approach],
+          ["03 / Outcome", project.outcome],
+        ].map(([label, copy], index) => (
+          <BlurFade key={label} delay={0.12 + index * 0.04} className="bg-background p-7 sm:p-9">
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: project.accent }}>
+              {label}
+            </div>
+            <p className="mt-4 text-pretty text-sm leading-7 text-muted-foreground">{copy}</p>
+          </BlurFade>
+        ))}
+      </div>
+    </main>
   );
 }

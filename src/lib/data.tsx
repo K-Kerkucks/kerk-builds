@@ -1,5 +1,11 @@
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
-import { HomeIcon, NotebookIcon, FileTextIcon, Mail } from "lucide-react";
+import {
+  HomeIcon,
+  NotebookIcon,
+  FileTextIcon,
+  Mail,
+  PanelsTopLeft,
+} from "lucide-react";
 
 export const DATA = {
   name: "Kerk Zhi Sheng",
@@ -33,6 +39,7 @@ export const DATA = {
 
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
+    { href: "/projects", icon: PanelsTopLeft, label: "Projects" },
     { href: "/blog", icon: NotebookIcon, label: "Blog" },
     { href: "/resume", icon: FileTextIcon, label: "Resume" },
   ],
@@ -114,11 +121,21 @@ export const DATA = {
   projects: [
     {
       title: "InboxPilot",
+      slug: "inboxpilot",
+      category: "AI operations",
+      accent: "#22d3ee",
+      visual: "inbox",
       href: "",
       dates: "2024 — Present",
       active: true,
       description:
         "A channel-agnostic triage system that classifies incoming requests, matches them against a knowledge base, and auto-replies or escalates. Configurable multi-agent pipeline with threshold-based routing and LLM-powered decision making.",
+      challenge:
+        "High-volume requests arrive with inconsistent context, making manual sorting slow and reliable responses difficult to scale.",
+      approach:
+        "A configurable agent pipeline classifies intent, retrieves grounded knowledge, scores confidence, and chooses between reply and human escalation.",
+      outcome:
+        "A repeatable path from unstructured messages to traceable decisions, with people kept in the loop for ambiguous cases.",
       technologies: [
         "Next.js",
         "Multi-Agent AI",
@@ -132,11 +149,21 @@ export const DATA = {
     },
     {
       title: "BoardFlow",
+      slug: "boardflow",
+      category: "AI workspace",
+      accent: "#a78bfa",
+      visual: "board",
       href: "",
       dates: "2024 — Present",
       active: true,
       description:
         "An intelligent workspace assistant combining Kanban board management with AI-powered ticket proposals, cross-workspace operations, and configurable agent profiles.",
+      challenge:
+        "Project context is fragmented across boards, tickets, and teams, so routine coordination becomes a constant tax on delivery.",
+      approach:
+        "A shared workspace model lets an AI assistant propose structured work, operate across boards, and adapt through configurable agent profiles.",
+      outcome:
+        "Teams get one operational surface where planning and AI-assisted execution stay connected instead of drifting into separate tools.",
       technologies: [
         "Next.js",
         "AI Assistant",
@@ -150,11 +177,21 @@ export const DATA = {
     },
     {
       title: "GigConnect",
+      slug: "gigconnect",
+      category: "Talent matching",
+      accent: "#fb7185",
+      visual: "network",
       href: "",
       dates: "2024",
       active: false,
       description:
         "AI-powered gig platform with skill-based matching using vector embeddings, verified identity integration, and intelligent job recommendations.",
+      challenge:
+        "Keyword search misses adjacent skills and makes it hard for credible talent to surface when job descriptions are imperfect.",
+      approach:
+        "Semantic matching pairs skill embeddings with verified profiles, then turns similarity signals into explainable recommendations.",
+      outcome:
+        "Discovery becomes more relevant than literal keyword matching while identity checks help make each recommendation more trustworthy.",
       technologies: [
         "Next.js",
         "Supabase",
@@ -168,11 +205,21 @@ export const DATA = {
     },
     {
       title: "DataLens",
+      slug: "datalens",
+      category: "Data platform",
+      accent: "#34d399",
+      visual: "analytics",
       href: "",
       dates: "2022 — Present",
       active: true,
       description:
         "Real-time operational dashboards with automated anomaly detection, cross-functional audit trails, and drill-down analytics for engineering teams.",
+      challenge:
+        "Operational signals live across disconnected sources, delaying anomaly detection and making root-cause analysis difficult to audit.",
+      approach:
+        "Streaming pipelines standardise events into trusted models, then expose anomalies, drill-downs, and audit trails in one analytical layer.",
+      outcome:
+        "Engineering teams can move from a top-level signal to supporting detail without losing the lineage behind each decision.",
       technologies: [
         "Databricks",
         "SQL",
@@ -186,11 +233,21 @@ export const DATA = {
     },
     {
       title: "Desktop Pet",
+      slug: "desktop-pet",
+      category: "Creative coding",
+      accent: "#fbbf24",
+      visual: "pet",
       href: "",
       dates: "2024",
       active: false,
       description:
         "An interactive desktop companion that lives on your screen — reacts to mouse movements, has idle animations, and brings a bit of joy to long coding sessions. Built as a fun weekend project to explore desktop rendering and sprite animation.",
+      challenge:
+        "Desktop utilities are useful but rarely delightful; this experiment asked how a tiny ambient character could feel alive without becoming distracting.",
+      approach:
+        "A lightweight Electron shell combines pointer-aware behaviour, an animation state machine, and canvas-rendered sprite sequences.",
+      outcome:
+        "A playful always-on-top companion and a compact exploration of expressive interaction within tight performance constraints.",
       technologies: [
         "Electron",
         "TypeScript",
@@ -203,11 +260,21 @@ export const DATA = {
     },
     {
       title: "Nihongo Drill",
+      slug: "nihongo-drill",
+      category: "Learning tool",
+      accent: "#60a5fa",
+      visual: "language",
       href: "",
       dates: "2023 — 2024",
       active: false,
       description:
         "A Japanese language learning app built for personal study. Features hiragana/katakana drills, vocabulary flashcards with spaced repetition, and JLPT N5-N4 grammar exercises. Built because existing apps were either too gamified or too expensive.",
+      challenge:
+        "Many language apps optimise for streaks or subscriptions instead of focused repetition that matches a learner's actual weak spots.",
+      approach:
+        "A local-first mobile experience combines kana drills, vocabulary cards, grammar practice, and a spaced-repetition schedule.",
+      outcome:
+        "A calm, purpose-built study loop that keeps the learner focused on recall and progression rather than game mechanics.",
       technologies: [
         "React Native",
         "TypeScript",

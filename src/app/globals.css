@@ -180,5 +180,55 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .project-breakout {
+    width: min(1180px, calc(100vw - 2rem));
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .project-scroll-shell {
+    scroll-snap-type: y mandatory;
+    scroll-padding-block: 0;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--foreground) 22%, transparent) transparent;
+  }
+
+  .project-scroll-shell::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .project-scroll-shell::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--foreground) 20%, transparent);
+  }
+
+  .project-spotlight {
+    background: radial-gradient(
+      480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      color-mix(in oklab, var(--project-accent) 13%, transparent),
+      transparent 48%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .project-scroll-shell {
+    scroll-snap-type: y proximity;
+  }
+
+  .project-story,
+  .project-story * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
