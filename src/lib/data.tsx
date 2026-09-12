@@ -183,5 +183,39 @@ export const DATA = {
       image: "",
       video: "",
     },
+    {
+      title: "Desktop Pet",
+      href: "",
+      dates: "2024",
+      active: false,
+      description:
+        "An interactive desktop companion that lives on your screen — reacts to mouse movements, has idle animations, and brings a bit of joy to long coding sessions. Built as a fun weekend project to explore desktop rendering and sprite animation.",
+      technologies: [
+        "Electron",
+        "TypeScript",
+        "Canvas API",
+        "Sprite Animation",
+      ],
+      links: [],
+      image: "",
+      video: "",
+    },
+    {
+      title: "Nihongo Drill",
+      href: "",
+      dates: "2023 — 2024",
+      active: false,
+      description:
+        "A Japanese language learning app built for personal study. Features hiragana/katakana drills, vocabulary flashcards with spaced repetition, and JLPT N5-N4 grammar exercises. Built because existing apps were either too gamified or too expensive.",
+      technologies: [
+        "React Native",
+        "TypeScript",
+        "SQLite",
+        "Spaced Repetition",
+      ],
+      links: [],
+      image: "",
+      video: "",
+    },
   ],
 } as const;
