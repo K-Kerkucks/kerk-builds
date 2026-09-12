@@ -7,7 +7,7 @@ export const siteConfig = {
   email: "zhishengkerk@gmail.com",
   links: {
     github: "https://github.com/K-Kerkucks",
-    linkedin: "https://linkedin.com/in/kerkzhisheng",
+    linkedin: "https://www.linkedin.com/in/kerk-zhi-sheng-59060a171/",
   },
 };
 
@@ -42,16 +42,6 @@ export const projects: Project[] = [
       "An intelligent workspace assistant combining Kanban board management with AI-powered ticket proposals, cross-workspace operations, and configurable agent profiles. Features real-time collaboration, rich text editing, and automated workflow orchestration.",
     tags: ["Next.js", "AI Assistant", "Kanban", "PostgreSQL", "Real-time"],
     image: "/projects/board-flow.png",
-    featured: true,
-  },
-  {
-    slug: "posture-kit",
-    title: "PostureKit",
-    tagline: "AI Posture & Wellness Engine",
-    description:
-      "Real-time pose detection engine using MediaPipe for fitness, physiotherapy, and workplace ergonomics. Features posture scoring, guided onboarding, and an always-on monitoring widget with configurable sensitivity.",
-    tags: ["Next.js", "MediaPipe", "Computer Vision", "WebGL", "Health Tech"],
-    image: "/projects/posture-kit.png",
     featured: true,
   },
   {

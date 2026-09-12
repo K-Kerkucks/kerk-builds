@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import { siteConfig } from "@/lib/data";
 import "./globals.css";
 
@@ -48,11 +47,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-screen bg-background font-sans">
         <ThemeProvider>
+          <main className="mx-auto max-w-2xl px-6 py-12 sm:py-24 pb-24">
+            {children}
+          </main>
           <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
         </ThemeProvider>
       </body>
     </html>
