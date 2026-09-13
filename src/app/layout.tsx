@@ -22,20 +22,20 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: DATA.name,
-    template: `%s | ${DATA.name}`,
+    default: DATA.siteName,
+    template: `%s | ${DATA.siteName}`,
   },
   description: DATA.description,
   openGraph: {
-    title: DATA.name,
+    title: DATA.siteName,
     description: DATA.description,
     url: DATA.url,
-    siteName: DATA.name,
+    siteName: DATA.siteName,
     locale: "en_US",
     type: "website",
   },
   twitter: {
-    title: DATA.name,
+    title: DATA.siteName,
     card: "summary_large_image",
   },
   robots: {

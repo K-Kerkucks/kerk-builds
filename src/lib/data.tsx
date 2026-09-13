@@ -9,8 +9,9 @@ import {
 
 export const DATA = {
   name: "Kerk Zhi Sheng",
+  siteName: "Kerk Builds",
   initials: "KZS",
-  url: "https://kerkzhisheng.com",
+  url: "https://kerkbuilds.com",
   location: "Singapore",
   description:
     "Data & AI Engineer building production-ready internal products, from deliberate data foundations to multi-agent workflows.",
