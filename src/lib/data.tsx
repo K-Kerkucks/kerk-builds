@@ -141,7 +141,20 @@ export const DATA = {
         "Presented an internal Databricks brown-bag session on Genie agents and Genie Code, sharing how they can accelerate the path from data to insight.",
         "Participated actively in internal speaking forums and hackathons to share applied AI patterns and explore new product ideas.",
       ],
-      activityImage: "",
+      activityImages: [
+        {
+          src: "/work/govtech-speaking.png",
+          alt: "Kerk presenting at an internal sharing session",
+        },
+        {
+          src: "/work/govtech-hackathon-team.png",
+          alt: "Kerk with teammates at the Build Hackathon",
+        },
+        {
+          src: "/work/govtech-hackathon-stage.png",
+          alt: "Team photo at the Build Hackathon closing ceremony",
+        },
+      ],
     },
     {
       company: "Micron Technology",
@@ -179,7 +192,7 @@ export const DATA = {
         { value: "2-5%", label: "Additional savings" },
       ],
       activities: [],
-      activityImage: "",
+      activityImages: [],
     },
     {
       company: "National University of Singapore",
@@ -209,7 +222,7 @@ export const DATA = {
         { value: "XML", label: "Model backbone" },
       ],
       activities: [],
-      activityImage: "",
+      activityImages: [],
     },
   ],
 
