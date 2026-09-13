@@ -109,7 +109,7 @@ export const DATA = {
       location: "Singapore",
       title: "Data & AI Engineer",
       logoUrl: "/logos/govtech.png",
-      start: "2024",
+      start: "2025",
       end: "Present",
       description:
         "My core scope covers data engineering across five internal projects, including dashboard development, data pipeline delivery and maintenance, optimization, and operational monitoring. I also design and ship internal AI products on top of this foundation.",
@@ -291,7 +291,7 @@ export const DATA = {
       accent: "#22d3ee",
       visual: "inbox",
       href: "",
-      dates: "2024 to Present",
+      dates: "2025 to Present",
       active: true,
       release: "Production · Internal",
       description:
@@ -322,7 +322,7 @@ export const DATA = {
       accent: "#a78bfa",
       visual: "board",
       href: "",
-      dates: "2024 to Present",
+      dates: "2025 to Present",
       active: true,
       release: "Production · Internal",
       description:

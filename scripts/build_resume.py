@@ -236,7 +236,7 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
     add_bullet(doc, "Bachelor of Engineering, Industrial and Systems Engineering")
 
     add_section_heading(doc, "Professional Experience")
-    add_header_row(doc, "GovTech  |  Data and AI Engineer", "2024 to Present", before=2)
+    add_header_row(doc, "GovTech  |  Data and AI Engineer", "2025 to Present", before=2)
     add_plain_paragraph(
         doc,
         "My core scope covers data engineering across five internal projects, including dashboard development, data pipeline delivery and maintenance, optimization, and operational monitoring. I also design and ship internal AI products on top of this foundation.",

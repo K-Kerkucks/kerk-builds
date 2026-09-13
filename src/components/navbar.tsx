@@ -13,8 +13,11 @@ import {
 
 export function Navbar() {
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30 mx-auto">
-      <Dock className="pointer-events-auto relative mx-auto flex min-h-full items-end rounded-2xl border bg-background px-1 shadow-lg [&>*]:h-full">
+    <div className="pointer-events-none fixed inset-x-0 bottom-2 z-30 mx-auto px-2 sm:bottom-4 sm:px-0">
+      <Dock
+        iconSize={36}
+        className="pointer-events-auto relative mx-auto flex h-[52px] max-w-[calc(100vw-1rem)] items-end gap-0 rounded-2xl border bg-background p-1 shadow-lg sm:h-[58px] sm:max-w-none sm:gap-2 sm:p-2 [&>*]:h-full"
+      >
         {DATA.navbar.map((item) => (
           <DockIcon key={item.href}>
             <Tooltip>
@@ -22,7 +25,7 @@ export function Navbar() {
                 <Link
                   href={item.href}
                   aria-label={item.label}
-                  className="flex aspect-square cursor-pointer items-center justify-center rounded-full size-12 bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  className="flex aspect-square size-9 cursor-pointer items-center justify-center rounded-full bg-background p-0 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:size-12"
                 >
                   <item.icon className="size-4" />
                 </Link>
@@ -34,7 +37,7 @@ export function Navbar() {
           </DockIcon>
         ))}
 
-        <Separator orientation="vertical" className="h-8 mx-0.5" />
+        <Separator orientation="vertical" className="mx-0 h-8 sm:mx-0.5" />
 
         {Object.entries(DATA.contact.social)
           .filter(([, social]) => social.navbar)
@@ -51,7 +54,7 @@ export function Navbar() {
                         ? "noopener noreferrer"
                         : undefined
                     }
-                    className="flex aspect-square cursor-pointer items-center justify-center rounded-full size-12 bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="flex aspect-square size-9 cursor-pointer items-center justify-center rounded-full bg-background p-0 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:size-12"
                   >
                     <social.icon className="size-4" />
                   </Link>
@@ -63,7 +66,7 @@ export function Navbar() {
             </DockIcon>
           ))}
 
-        <Separator orientation="vertical" className="h-8 mx-0.5" />
+        <Separator orientation="vertical" className="mx-0 h-8 sm:mx-0.5" />
 
         <DockIcon>
           <Tooltip>

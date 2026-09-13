@@ -145,8 +145,8 @@ export function ProjectsShowcase({ compact = false }: ProjectsShowcaseProps) {
               key={project.slug}
               id={`project-${project.slug}`}
               data-project-index={index}
-              initial={reduceMotion ? false : { opacity: 0.35, scale: 0.985 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
+              initial={reduceMotion ? false : { scale: 0.985 }}
+              whileInView={reduceMotion ? undefined : { scale: 1 }}
               viewport={{ root: scrollerRef, amount: 0.55 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               onPointerMove={(event) => {

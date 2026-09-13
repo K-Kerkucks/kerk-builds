@@ -12,7 +12,7 @@ export function ThemeToggle() {
       tabIndex={0}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setTheme(theme === "dark" ? "light" : "dark"); }}
-      className="relative flex aspect-square cursor-pointer items-center justify-center rounded-full size-12 bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+      className="relative flex aspect-square size-9 cursor-pointer items-center justify-center rounded-full bg-background p-0 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:size-12"
       aria-label="Toggle theme"
     >
       <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
