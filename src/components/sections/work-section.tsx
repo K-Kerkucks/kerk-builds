@@ -7,6 +7,7 @@ import {
   MapPin,
   Presentation,
 } from "lucide-react";
+import { ActivityAlbum } from "@/components/activity-album";
 import { DATA } from "@/lib/data";
 
 export function WorkSection() {
@@ -130,16 +131,7 @@ export function WorkSection() {
               {work.activities.length > 0 ? (
                 <div className="mt-6 grid gap-5 border-t border-border/60 pt-6 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
                   {work.activityImages.length > 0 ? (
-                    <div className="grid grid-cols-2 items-start gap-2">
-                      {work.activityImages.map((image, imageIndex) => (
-                        <img
-                          key={image.src}
-                          src={image.src}
-                          alt={image.alt}
-                          className={`h-auto w-full rounded-xl border border-border/60 ${imageIndex === 2 ? "col-span-2" : ""}`}
-                        />
-                      ))}
-                    </div>
+                    <ActivityAlbum images={work.activityImages} />
                   ) : (
                     <div className="flex aspect-video flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-muted/30 text-center text-muted-foreground">
                       <ImageIcon className="size-5" aria-hidden />
