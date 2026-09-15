@@ -1,4 +1,4 @@
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { LinkedinIcon } from "@/components/icons";
 import {
   HomeIcon,
   NotebookIcon,
@@ -79,12 +79,6 @@ export const DATA = {
   contact: {
     email: "zhishengkerk@gmail.com",
     social: {
-      GitHub: {
-        name: "GitHub",
-        url: "https://github.com/K-Kerkucks",
-        icon: GithubIcon,
-        navbar: true,
-      },
       LinkedIn: {
         name: "LinkedIn",
         url: "https://www.linkedin.com/in/kerk-zhi-sheng-59060a171/",
