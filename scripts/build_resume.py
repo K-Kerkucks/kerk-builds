@@ -12,6 +12,7 @@ import tempfile
 from docx import Document
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
@@ -20,13 +21,13 @@ from docx.shared import Inches, Pt, RGBColor
 DEFAULT_TEMPLATE = Path("/Users/KERK_Zhi_Sheng/Downloads/Resume - Kerk Zhi Sheng.docx")
 EXPECTED_TEMPLATE_SHA256 = "dac8d03db16337fc2a712d4b21697bedb7641ab6476f0d0202f11cbeea9e702f"
 DEFAULT_OUTPUT = Path("public/Kerk_Zhi_Sheng_Resume.docx")
+PORTFOLIO_URL = "https://kerk-builds.vercel.app"
 PRESERVE_PARTS = {
     "[Content_Types].xml",
     "_rels/.rels",
     "customXML/_rels/item1.xml.rels",
     "customXML/item1.xml",
     "customXML/itemProps1.xml",
-    "word/_rels/document.xml.rels",
     "word/_rels/fontTable.xml.rels",
     "word/fontTable.xml",
     "word/fonts/NotoSansSymbols-bold.ttf",
@@ -69,6 +70,32 @@ def set_run(run, *, bold: bool | None = None, size: float = 11.2) -> None:
     run.font.color.rgb = RGBColor(0, 0, 0)
     if bold is not None:
         run.bold = bold
+
+
+def add_hyperlink(paragraph, text: str, url: str, *, size: float = 10.2) -> None:
+    relationship_id = paragraph.part.relate_to(url, RT.HYPERLINK, is_external=True)
+    hyperlink = OxmlElement("w:hyperlink")
+    hyperlink.set(qn("r:id"), relationship_id)
+
+    run = OxmlElement("w:r")
+    properties = OxmlElement("w:rPr")
+    fonts = OxmlElement("w:rFonts")
+    fonts.set(qn("w:ascii"), "Times New Roman")
+    fonts.set(qn("w:hAnsi"), "Times New Roman")
+    color = OxmlElement("w:color")
+    color.set(qn("w:val"), "0563C1")
+    underline = OxmlElement("w:u")
+    underline.set(qn("w:val"), "single")
+    font_size = OxmlElement("w:sz")
+    font_size.set(qn("w:val"), str(round(size * 2)))
+    properties.extend([fonts, color, underline, font_size])
+    run.append(properties)
+
+    text_node = OxmlElement("w:t")
+    text_node.text = text
+    run.append(text_node)
+    hyperlink.append(run)
+    paragraph._p.append(hyperlink)
 
 
 def set_body_paragraph(
@@ -225,11 +252,23 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
     clear_after_header(doc)
 
     contact = doc.paragraphs[1]
+    for child in list(contact._p):
+        if child.tag != qn("w:pPr"):
+            contact._p.remove(child)
     contact.paragraph_format.space_after = Pt(3)
-    contact.paragraph_format.tab_stops.add_tab_stop(Inches(3.0), WD_TAB_ALIGNMENT.LEFT)
-    contact.text = "Email: zhishengkerk@gmail.com\tMobile: +65 8188 7419"
-    for run in contact.runs:
-        set_run(run, size=11.2)
+    contact.paragraph_format.tab_stops.add_tab_stop(Inches(2.7), WD_TAB_ALIGNMENT.LEFT)
+    contact.paragraph_format.tab_stops.add_tab_stop(Inches(4.55), WD_TAB_ALIGNMENT.LEFT)
+    set_run(contact.add_run("Email: zhishengkerk@gmail.com\t"), size=10.2)
+    set_run(contact.add_run("Mobile: +65 8188 7419\t"), size=10.2)
+    set_run(contact.add_run("Portfolio: "), size=10.2)
+    add_hyperlink(contact, "kerk-builds.vercel.app", PORTFOLIO_URL)
+
+    add_section_heading(doc, "Profile")
+    add_plain_paragraph(
+        doc,
+        "Data and AI Engineer with experience delivering internal data products across government and semiconductor operations. My work spans production data pipelines, operational monitoring, supply chain optimization, and two AI applications used in production. I build from the data model outward so workflows remain traceable, maintainable, and ready for internal adoption.",
+        after=5,
+    )
 
     add_section_heading(doc, "Education")
     add_header_row(doc, "National University of Singapore (NUS)", "Aug 2018 to May 2022")
@@ -239,28 +278,30 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
     add_header_row(doc, "GovTech  |  Data and AI Engineer", "2025 to Present", before=2)
     add_plain_paragraph(
         doc,
-        "My core scope covers data engineering across five internal projects, including dashboard development, data pipeline delivery and maintenance, optimization, and operational monitoring. I also design and ship internal AI products on top of this foundation.",
+        "Work across five internal data projects while extending this foundation into AI product engineering. Delivered two internal AI applications into production, with responsibility spanning data design, application workflows, deployment, and operational readiness.",
         after=5,
     )
     add_subsection_heading(doc, "Core data engineering", before=3)
     for bullet in [
-        "Worked across five internal projects, developing operational dashboards and building, maintaining, and improving data pipelines used by internal teams.",
-        "Developed optimization and monitoring solutions, including pipeline skip detection and volume analysis to surface skipped runs and unexpected processing patterns.",
+        "Support five internal projects by developing operational dashboards and building, maintaining, and optimizing the data pipelines used by internal teams.",
+        "Built monitoring solutions for pipeline skip detection and volume analysis, helping teams surface missed runs and unexpected processing patterns for investigation.",
     ]:
         add_bullet(doc, bullet, after=4)
 
     add_subsection_heading(doc, "AI product engineering", before=5)
     for bullet in [
-        "Built a channel-agnostic multi-agent triage platform with configurable pipelines, knowledge-base matching, confidence thresholds, automated replies, human escalation, and auditable state.",
-        "Designed an AI-enabled workspace that combines ticket proposals, Kanban workflows, configurable agent profiles, permission boundaries, and cross-workspace operations.",
-        "Applied data engineering principles to AI production readiness through intentional schemas, dependable persistence, traceable agent decisions, and maintainable integration boundaries.",
+        "Delivered InboxPilot and BoardFlow, two internal AI applications now used in production, from initial data model and workflow design through deployment.",
+        "Built InboxPilot as a channel-agnostic multi-agent triage system that classifies requests, retrieves governed knowledge, scores confidence, and routes each case to an automated reply or human review.",
+        "Designed BoardFlow as an AI-enabled workspace that turns conversations into structured ticket proposals and connects them with Kanban workflows, configurable agents, permissions, and cross-workspace operations.",
+        "Established intentional schemas, dependable persistence, versioned knowledge, and auditable agent decisions so both products can be operated and extended beyond an initial demonstration.",
         "Developed an internal real-time pose-detection engine with MediaPipe for an internal workflow.",
     ]:
         add_bullet(doc, bullet, after=4)
 
     add_subsection_heading(doc, "Internal knowledge sharing", before=5)
     for bullet in [
-        "Presented an internal Databricks brown-bag session on Genie agents and Genie Code, and participated in internal forums and hackathons to share practical AI adoption patterns.",
+        "Presented an internal Databricks brown-bag session on Genie agents and Genie Code, sharing how internal teams use them to shorten the path from governed data to useful insights.",
+        "Participated in internal speaking forums and hackathons to exchange practical AI delivery patterns and test new product ideas with colleagues.",
     ]:
         add_bullet(doc, bullet, after=5)
 
@@ -268,7 +309,8 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
     add_subsection_heading(doc, "Optimization and planning", before=3)
     for bullet in [
         "Led supply-chain optimization work for tactical planning and planned-order firming, including improvements that delivered an additional 2-5% cost saving for assembly products while preserving order constraints.",
-        "Directed equipment performance-to-model tracking and coordinated data engineers building reliable sources for model-accuracy analysis.",
+        "Built raw-material health reports and automated tactical-planning reports to support timely order fulfillment and downstream firming operations.",
+        "Led equipment performance-to-model tracking by comparing actual and modelled equipment time, then coordinated data engineers to establish trusted sources for accuracy analysis.",
     ]:
         add_bullet(doc, bullet, after=4)
 
@@ -288,18 +330,6 @@ def build_resume(output_path: Path, template_path: Path = DEFAULT_TEMPLATE) -> N
         "Implemented the XML backbone that translated warehouse process flows into the simulation model.",
     ]:
         add_bullet(doc, bullet, after=4)
-
-    add_section_heading(doc, "Selected Internal Products")
-    add_item_heading(doc, "Multi-agent triage platform", before=2)
-    add_bullet(
-        doc,
-        "Classifies unstructured requests, retrieves governed knowledge, scores confidence, and routes each case to an automated response or human review. Versioned knowledge and audit records keep decisions explainable and recoverable.",
-    )
-    add_item_heading(doc, "AI workspace platform")
-    add_bullet(
-        doc,
-        "Connects AI-assisted ticket proposals with Kanban operations and configurable agents. A durable relational model for workspaces, permissions, tickets, and events supports controlled growth.",
-    )
 
     add_section_heading(doc, "Certifications")
     add_bullet(doc, "Databricks Certified Data Engineer Associate")

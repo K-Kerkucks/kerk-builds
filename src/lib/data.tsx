@@ -11,7 +11,7 @@ export const DATA = {
   name: "Kerk Zhi Sheng",
   siteName: "Kerk Builds",
   initials: "KZS",
-  url: "https://kerkbuilds.com",
+  url: "https://kerk-builds.vercel.app",
   location: "Singapore",
   description:
     "Data & AI Engineer building production-ready internal products, from deliberate data foundations to multi-agent workflows.",
